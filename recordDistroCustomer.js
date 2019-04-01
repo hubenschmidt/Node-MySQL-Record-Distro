@@ -24,11 +24,24 @@ connection.connect(function (err) {
 //function which prompts the user for ID of product they would like to buy, and how many units they would like to buy
 
 function readProducts() {
-    console.log('Display all products...\n')
+    console.log('Welcome to 99¢ Dreams Record Distribution. Wholesale price and quantity of available titles are listed below...\n')
     connection.query('SELECT * FROM products', function (err, res) {
         if (err) throw err;
-        console.log(res);
-        // connection.end();
+
+        for (i = 0; i < res.length; i++){
+            if (res[i].stock_quantity > 0){
+                console.log(
+                    // res[i].id +  ' | ' + 
+                    '$' + res[i].price.toFixed(2) + 
+                    ' | ' + res[i].product_name
+                    );
+
+            }
+            
+        }
+    
+        console.log('--------------------------------------------------------------------------------------------------')
+     
     })
 
     customerPrompt();
@@ -51,7 +64,9 @@ function customerPrompt() {
                         choices: function () {
                             var choiceArr = [];
                             for (var i = 0; i < res.length; i++) {
-                                choiceArr.push(res[i].product_name);
+                                if (res[i].stock_quantity > 0){
+                                    choiceArr.push(res[i].product_name);
+                                }
                             }
                             return choiceArr;
                         }
@@ -69,74 +84,59 @@ function customerPrompt() {
                     }
                 ])
 
-                // 7. Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
-
-                //    * If not, the app should log a phrase like `Insufficient quantity!`, and then prevent the order from going through.
-
                 .then(function (answer) {
-
-                    // get the information of the chosen product
-                    // console.log(answer)
                     var chosenProduct;
                     for (var i = 0; i < res.length; i++) {
                         if (res[i].product_name === answer.buyWhat) {
                             chosenProduct = res[i];
                         }
-                    }
+                    };
 
                     var howMany = parseInt(answer.howMany)
 
                     var buyWhat = answer.buyWhat
-                
+
+                    var grandTotal = chosenProduct.price * howMany;
+
                     if (chosenProduct.stock_quantity < howMany) {
-                        console.log('Insufficient quantity!')
-                        connection.end();
+                        console.log('Order exceeds available supply. Please try again...\n')
+
+                        // connection.end();
+                        customerPrompt();
                     } else if (chosenProduct.stock_quantity > howMany) {
 
-                        updateProduct(buyWhat, howMany);
+                        var newTotal = chosenProduct.stock_quantity - howMany;
 
-                        //     var updatedStock = chosenProduct.stock_quantity - parseInt(answer.howMany)
+                        updateProduct(buyWhat, newTotal);
 
-                        //     console.log(updatedStock)
+                        console.log(
+                            'Thank you for purchasing ' + howMany + ' copies of ' + buyWhat + '. \n',
+                            'Your total is $' + grandTotal.toFixed(2)
 
+                        )
                     }
-
                 })
         })
 }
 
 function updateProduct(product_name, stock_quantity) {
-    console.log("Updating all record quantities...\n");
+    // console.log("Updating all record quantities...\n");
     var query = connection.query('UPDATE products SET ? WHERE ?',
-    [
-        {
-            stock_quantity: stock_quantity
+        [
+            {
+                stock_quantity: stock_quantity
+            },
+            {
+                product_name: product_name
+            }
+        ],
+        function (err, res) {
+            if (err) throw err;
+            // console.log(res.affectedRows + " products updated! \n")
+
         },
-        {
-            product_name: product_name
-        }
-    ],
-    function(err, res){
-        if (err) throw err;
-        console.log(res.affectedRows + " products updated! \n")
-        
-    },
-    
-    
     );
     connection.end()
-
-    console.log(query.sql);
-    // console.log(stock_quantity)
-
-
-
+    // console.log(query.sql);
 }
-
-
-
-// 8. However, if your store _does_ have enough of the product, you should fulfill the customer's order.
-//    * This means updating the SQL database to reflect the remaining quantity.
-//    * Once the update goes through, show the customer the total cost of their purchase.
-
 
