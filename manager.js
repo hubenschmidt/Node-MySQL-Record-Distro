@@ -12,7 +12,7 @@
     
 //     * Add New Product
 
-//   * If a manager selects `View Products for Sale`, the app should list every available item: the item IDs, names, prices, and quantities.
+
 
 //   * If a manager selects `View Low Inventory`, then it should list all items with an inventory count lower than five.
 
@@ -65,11 +65,28 @@ function menuOptions(){
             
         }
     })
-
 }
 
 function viewProducts(){
-    console.log('display products')
+    console.log('Welcome to 99¢ Dreams Record Distribution. Wholesale price and quantity of available titles are listed below...\n')
+    //   * If a manager selects `View Products for Sale`, the app should list every available item: the item IDs, names, prices, and quantities.
+
+    connection.query('SELECT * FROM products', function(err, res){
+
+
+        if (err) throw err;
+
+        for (i = 0; i < res.length; i++){
+            console.log(
+                'ID: ' + res[i].id + ' | ' +
+                'quantity: ' + res[i].stock_quantity + ' | ' +
+                'price: $' + res[i].price.toFixed(2) + ' | ' +
+                'title: ' + res[i].product_name
+            )
+        }
+
+    console.log('--------------------------------------------------------------------------------------------------')
+})
 }
 
 function viewLowInventory(){
@@ -88,6 +105,3 @@ function exitManager(){
     console.log('exit program')
     connection.end();
 };
-   
-
- 
