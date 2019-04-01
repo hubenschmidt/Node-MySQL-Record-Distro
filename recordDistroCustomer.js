@@ -35,7 +35,6 @@ function readProducts() {
                     '$' + res[i].price.toFixed(2) + 
                     ' | ' + res[i].product_name
                     );
-
             }
             
         }
@@ -139,4 +138,5 @@ function updateProduct(product_name, stock_quantity) {
     connection.end()
     // console.log(query.sql);
 }
+
 
