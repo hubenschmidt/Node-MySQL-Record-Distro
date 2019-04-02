@@ -22,6 +22,8 @@
 
 var mysql = require('mysql');
 var inquirer = require('inquirer');
+var colors = require('colors');
+
 
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -40,6 +42,9 @@ connection.connect(function(err){
 })
 
 function menuOptions(){
+
+    console.log('Manager View '.underline.cyan
+    +'99¢ Record Distribution\n'.bgCyan.black)
     inquirer
     .prompt(
         [
@@ -68,29 +73,35 @@ function menuOptions(){
 }
 
 function viewProducts(){
-    console.log('Welcome to 99¢ Dreams Record Distribution. Wholesale price and quantity of available titles are listed below...\n')
-    //   * If a manager selects `View Products for Sale`, the app should list every available item: the item IDs, names, prices, and quantities.
+    // console.log
+    console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline.cyan)
 
     connection.query('SELECT * FROM products', function(err, res){
-
-
         if (err) throw err;
 
         for (i = 0; i < res.length; i++){
             console.log(
-                'ID: ' + res[i].id + ' | ' +
+                ('ID: ' + res[i].id + ' | ' +
                 'quantity: ' + res[i].stock_quantity + ' | ' +
                 'price: $' + res[i].price.toFixed(2) + ' | ' +
-                'title: ' + res[i].product_name
+                'title: ' + res[i].product_name).white
             )
         }
 
-    console.log('--------------------------------------------------------------------------------------------------')
+    console.log('\n'.black.bgCyan)
+    menuOptions();
 })
 }
 
 function viewLowInventory(){
     console.log('view inventory less than five')
+
+    connection.query('SELECT *  FROM products WHERE stock_quantity <= 1000', function(err, res){
+        if (err) throw err;
+        console.log(res)
+    })
+
+
 }
 
 function addInventory(){

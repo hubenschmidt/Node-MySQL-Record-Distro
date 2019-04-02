@@ -1,6 +1,7 @@
 
 var mysql = require('mysql');
 var inquirer = require('inquirer');
+var colors = require('colors');
 
 //connect to the mysql databse with creentials
 
@@ -24,7 +25,8 @@ connection.connect(function (err) {
 //function which prompts the user for ID of product they would like to buy, and how many units they would like to buy
 
 function readProducts() {
-    console.log('Welcome to 99¢ Dreams Record Distribution. Wholesale price and quantity of available titles are listed below...\n')
+     // console.log('\n--------------------99-C-E-N-T-D-I-S-T-R-O--------------------\n'.black.bgCyan)
+     console.log('\n Welcome to 99¢ Record Distribution. Wholesale price and quantity of available titles are listed below...\n'.underline.cyan)
     connection.query('SELECT * FROM products', function (err, res) {
         if (err) throw err;
 

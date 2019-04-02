@@ -1,0 +1,25 @@
+{
+  "name": "node-mysql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "manager.js",
+  "dependencies": {
+    "colors": "^1.3.3",
+    "inquirer": "^6.2.2",
+    "mysql": "^2.16.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hubenschmidt/Node-MySQL.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hubenschmidt/Node-MySQL/issues"
+  },
+  "homepage": "https://github.com/hubenschmidt/Node-MySQL#readme"
+}
