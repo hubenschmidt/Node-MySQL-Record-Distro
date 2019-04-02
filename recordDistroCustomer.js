@@ -1,3 +1,14 @@
+module.exports = {
+    foo: function () {
+      // whatever
+    },
+    bar: function () {
+      // whatever
+    }
+  };
+  
+  var zemba = function () {
+  }
 
 var mysql = require('mysql');
 var inquirer = require('inquirer');
@@ -122,7 +133,7 @@ function customerPrompt() {
 
 function updateProduct(product_name, stock_quantity) {
     // console.log("Updating all record quantities...\n");
-    var query = connection.query('UPDATE products SET ? WHERE ?',
+    connection.query('UPDATE products SET ? WHERE ?',
         [
             {
                 stock_quantity: stock_quantity
