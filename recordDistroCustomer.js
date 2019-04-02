@@ -1,15 +1,3 @@
-module.exports = {
-    foo: function () {
-      // whatever
-    },
-    bar: function () {
-      // whatever
-    }
-  };
-  
-  var zemba = function () {
-  }
-
 var mysql = require('mysql');
 var inquirer = require('inquirer');
 var colors = require('colors');
@@ -151,5 +139,3 @@ function updateProduct(product_name, stock_quantity) {
     connection.end()
     // console.log(query.sql);
 }
-
-
