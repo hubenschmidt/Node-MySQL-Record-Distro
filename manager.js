@@ -34,6 +34,25 @@ connection.connect(function (err) {
 
 })
 
+///////DATABASE WARNING\\\\\\\\
+////////////proceed no further
+//if not first ye..............
+///////////////\\\\\\\\\\\\\\\\
+//////////DEDUPLICATE!\\\\\\\\\\
+//////////////\\\\\\\\\\\\\\\\\\
+//☠☠☠☠☠☠☠☠  or  ☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠
+//Risk the Sea of Infinite Peril 
+//☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠
+function removeDupes(names){
+    var unique = {};
+    names.forEach(function(i){
+        if(!unique[i]){
+            unique[i] = true;
+        }
+    });
+    return Object.keys(unique)
+}
+
 function exitView() {
     inquirer
         .prompt(
@@ -124,9 +143,6 @@ function viewLowInventory() {
 }
 
 function addInventory() {
-
-
-
     connection.query('SELECT * FROM products',
         function (err, res) {
             if (err) throw err;
@@ -190,22 +206,6 @@ function addInventory() {
 
                     )
 
-                    // var query = connection.query('INSERT INTO products SET ?',
-                    // {
-                    //     // id: selectedItem.id,
-                    //     artist_name: selectedItem.artist_name,
-                    //     title:  selectedItem.title,
-                    //     product_name: selectedItem.product_name,
-                    //     department_name: selectedItem.department_name,
-                    //     price: selectedItem.price,
-                    //     stock_quantity: howMany
-                    // },  
-
-                    // function (err, res){
-                    //     if (err) throw err;
-                    //     console.log(res.affectedRows + 'product inserted!\n')
-
-                    // })
                 })
         }
     )
@@ -214,57 +214,121 @@ function addInventory() {
 
 
 function addProduct() {
-            inquirer
-                .prompt(
-                    [
-                        {
-                            name: 'artist_name',
-                            type: 'input',
-                            message: 'Artist name?',
-                            validate: function (value) {
-                                if (typeof value === 'string' || value instanceof String) {
-                                    return true
-                                }
-                                return false
-                            }
-                        },
-                        {
-                            name: 'title',
-                            type: 'input',
-                            message: 'Record title?',
-                            validate: function (value) {
-                                if (typeof value === 'string' || value instanceof String) {
-                                    return true
-                                }
-                                return false
-                            }
-                        },
-                        {
-                            name: 'howMany',
-                            type: 'input',
-                            message: 'How many copies?',
-                            validate: function(value){
-                                if (isNaN(value) === false){
-                                    return true
-                                }
-                                return false
-                            }   
-                        },
-                        {
-                            name: 'whatPrice',
-                            type: 'input',
-                            message: 'Set wholesale price (please enter whole numbers, no decimals):',
-                            validate: function(value){
-                                if ((value - Math.floor(value)) !==0){
-                                    return false
-                                }
-                                return true
-                            }
-                        }
 
-                    ]).then(function(answer){
-                        console.log(answer)
-                    })
+    connection.query('SELECT * FROM products', 
+    function(err, res){
+        if (err) throw err;
+
+    
+        inquirer
+        .prompt(
+            [
+                
+                {
+                    name: 'department_name',
+                    type: 'list',
+                    message: 'Select genre:',
+                    choices: function () {
+                        var choiceArr = [];
+                        for (var i = 0; i < res.length; i++) {
+                            choiceArr.push(res[i].department_name);
+                        }
+                     
+                        // console.log(removeDupes(choiceArr));
+                        return removeDupes(choiceArr);
+                    }
+                },
+                {
+                    name: 'artist_name',
+                    type: 'input',
+                    message: 'Artist name?',
+                    validate: function (value) {
+                        if (typeof value === 'string' || value instanceof String) {
+                            return true
+                        }
+                        return false
+                    }
+                },
+                {
+                    name: 'title',
+                    type: 'input',
+                    message: 'Record title?',
+                    validate: function (value) {
+                        if (typeof value === 'string' || value instanceof String) {
+                            return true
+                        }
+                        return false
+                    }
+                },
+                {
+                    name: 'stock_quantity',
+                    type: 'input',
+                    message: 'How many copies?',
+                    validate: function(value){
+                        if (isNaN(value) === false){
+                            return true
+                        }
+                        return false
+                    }   
+                },
+                {
+                    name: 'price',
+                    type: 'input',
+                    message: '99¢ stocking fee included in all wholesale prices...\n'.yellow + 'Set wholesale price (whole numbers, no decimals:)',
+                    validate: function(value){
+                        if ((value - Math.floor(value)) !==0){
+                            return false
+                        }
+                        return true
+                    }
+                },
+                
+            ]).then(function(answer){
+                console.log(parseFloat(answer.price + ".99"));
+                console.log(answer.artist_name + ' - ' + answer.title)
+
+                var query = connection.query('INSERT INTO products SET ?',
+                {
+                    product_name: answer.artist_name + ' - ' + answer.title,
+                    artist_name: answer.artist_name,
+                    title: answer.title,
+                    department_name: answer.department_name,
+                    stock_quantity: answer.stock_quantity,
+                    price: parseFloat(answer.price + ".99")
+                },
+                function (err, res){
+                    if (err) throw err;
+                    console.log(res.affectedRows + ' new product added: ' + query.sql)
+
+                }
+                
+                
+                )
+                
+                // var query = connection.query('INSERT INTO products ')
+
+   // var query = connection.query('INSERT INTO products SET ?',
+            // {
+            //     // id: selectedItem.id,
+            //     artist_name: selectedItem.artist_name,
+            //     title:  selectedItem.title,
+            //     product_name: selectedItem.product_name,
+            //     department_name: selectedItem.department_name,
+            //     price: selectedItem.price,
+            //     stock_quantity: howMany
+            // },  
+
+            // function (err, res){
+            //     if (err) throw err;
+            //     console.log(res.affectedRows + 'product inserted!\n')
+
+            // })
+
+
+            })
+
+    })
+           
 
         }
     
