@@ -1,19 +1,3 @@
-// ### Challenge #2: Manager View (Next Level)
-
-// * Create a new Node application called `bamazonManager.js`. Running this application will:
-
-//   * List a set of menu options:
-
-//     * View Products for Sale
-
-//     * View Low Inventory
-
-//     * Add to Inventory
-
-//     * Add New Product
-
-//   * If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
-
 var mysql = require('mysql');
 var inquirer = require('inquirer');
 var colors = require('colors');
@@ -75,8 +59,8 @@ function exitView() {
 
 function menuOptions() {
 
-    console.log('Manager View '.bold.green
-        + '99¢ Record Distribution\n'.bgCyan.black + '\n')
+    console.log('Manager View '.bold.magenta
+        + '99¢ Record Distribution\n'.bgMagenta.black + '\n')
     inquirer
         .prompt(
             [
@@ -110,21 +94,20 @@ function listProducts(res) {
             ('ID: ' + res[i].id + ' | ' +
                 'quantity: ' + res[i].stock_quantity + ' | ' +
                 'price: $' + res[i].price.toFixed(2) + ' | ' +
-                'title: ' + res[i].product_name).white
+                'title: ' + res[i].product_name)
         )
     }
 }
 
 function viewProducts() {
     // console.log
-    console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline.cyan)
+    console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
 
     connection.query('SELECT * FROM products', function (err, result) {
         if (err) throw err;
 
         listProducts(result);
 
-        console.log('\n'.black.bgCyan)
         menuOptions();
     })
 }
@@ -198,7 +181,7 @@ function addInventory() {
                             console.log('\n\n' + selectedItem.product_name.cyan + ' updated...' + '\nThe following change was made to the product database:'.bgGreen.black)
 
                             console.log(query.sql.green + '\n\n')
-                            console.log('____________________________________\n'.underline.cyan)
+                            console.log('____________________________________\n'.underline.green)
 
                             exitView();
 
@@ -209,9 +192,7 @@ function addInventory() {
                 })
         }
     )
-
 }
-
 
 function addProduct() {
 
@@ -219,11 +200,9 @@ function addProduct() {
     function(err, res){
         if (err) throw err;
 
-    
         inquirer
         .prompt(
             [
-                
                 {
                     name: 'department_name',
                     type: 'list',
@@ -284,7 +263,9 @@ function addProduct() {
                 },
                 
             ]).then(function(answer){
-                console.log(parseFloat(answer.price + ".99"));
+
+                let ninetyNineCents = parseFloat(answer.price + '.99')
+
                 console.log(answer.artist_name + ' - ' + answer.title)
 
                 var query = connection.query('INSERT INTO products SET ?',
@@ -294,44 +275,25 @@ function addProduct() {
                     title: answer.title,
                     department_name: answer.department_name,
                     stock_quantity: answer.stock_quantity,
-                    price: parseFloat(answer.price + ".99")
+                    price: ninetyNineCents
                 },
                 function (err, res){
+
                     if (err) throw err;
-                    console.log(res.affectedRows + ' new product added: ' + query.sql)
 
+                    console.log('\n\n' + answer.stock_quantity.yellow + ' copies of '.yellow + answer.artist_name.yellow + ' - '.yellow + answer.title.yellow + ' at '.yellow + '$'.yellow+answer.price.yellow +'.99 per unit'.yellow + ' added to the product database...' +
+                    '\n The following change was made:'.bgYellow.black)
+
+                            console.log(query.sql.yellow + '\n\n')
+                            console.log('____________________________________\n'.underline.yellow)
+                            exitView();
                 }
-                
-                
+                 
                 )
-                
-                // var query = connection.query('INSERT INTO products ')
-
-   // var query = connection.query('INSERT INTO products SET ?',
-            // {
-            //     // id: selectedItem.id,
-            //     artist_name: selectedItem.artist_name,
-            //     title:  selectedItem.title,
-            //     product_name: selectedItem.product_name,
-            //     department_name: selectedItem.department_name,
-            //     price: selectedItem.price,
-            //     stock_quantity: howMany
-            // },  
-
-            // function (err, res){
-            //     if (err) throw err;
-            //     console.log(res.affectedRows + 'product inserted!\n')
-
-            // })
-
-
+        
             })
-
     })
-           
-
         }
-    
 
 function exitManager() {
     console.log('exit program')

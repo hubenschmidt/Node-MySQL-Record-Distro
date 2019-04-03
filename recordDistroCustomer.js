@@ -25,14 +25,15 @@ connection.connect(function (err) {
 
 function readProducts() {
      // console.log('\n--------------------99-C-E-N-T-D-I-S-T-R-O--------------------\n'.black.bgCyan)
-     console.log('\n Welcome to 99¢ Record Distribution. Wholesale price and quantity of available titles are listed below...\n'.underline.cyan)
+     console.log('\n\n      Welcome to 99¢ Record Distribution\n\n'.bgBlue.yellow.bold+ 'Wholesale price and quantity of available titles are listed below...\n'.bgBlack.yellow + '\n\n')
+
     connection.query('SELECT * FROM products', function (err, res) {
         if (err) throw err;
 
         for (i = 0; i < res.length; i++){
             if (res[i].stock_quantity > 0){
                 console.log(
-                    // res[i].id +  ' | ' + 
+                    res[i].id +  ' | ' + 
                     '$' + res[i].price.toFixed(2) + 
                     ' | ' + res[i].product_name
                     );
@@ -60,17 +61,16 @@ function customerPrompt() {
                     {
                         name: 'buyWhat',
                         type: 'rawlist',
-                        message: 'Which record would you like to buy?',
+                        message: 'Select:',
                         choices: function () {
                             var choiceArr = [];
                             for (var i = 0; i < res.length; i++) {
-                                if (res[i].stock_quantity > 0){
-                                    choiceArr.push(res[i].product_name);
-                                }
+                                choiceArr.push(res[i].product_name);
                             }
                             return choiceArr;
                         }
                     },
+            
                     {
                         name: 'howMany',
                         type: 'input',
@@ -106,12 +106,17 @@ function customerPrompt() {
                         var newTotal = chosenProduct.stock_quantity - howMany;
 
                         updateProduct(chosenProduct.product_name, newTotal);
-
+                        
+                        console.log('\n\nSales receipt____________________________________________________'.bold.yellow)
                         console.log(
-                            'Thank you for purchasing ' + howMany + ' copies of ' + chosenProduct.product_name + '. \n',
-                            'Your total is $' + grandTotal.toFixed(2)
-
+                            '\n Thank you for purchasing \n' + howMany + ' copies of ' + chosenProduct.product_name + '. \n',
+                            'Your total is $' + grandTotal.toFixed(2) +  '\n' +
+                            'Your order will ship within 2-3 business days.'
                         )
+                        console.log('\n for inquiries msg \n  norequests@99centradio.com\n____________________________________'.yellow+
+                        '\n_______________________________'.yellow+
+                        '\n_________________________'.yellow)
+              
                     }
                 })
         })
