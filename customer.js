@@ -96,6 +96,10 @@ function customerPrompt() {
 
                     var grandTotal = chosenProduct.price * howMany;
 
+                    var productSalesRunningTotal = chosenProduct.product_sales + grandTotal
+
+                    console.log(productSalesRunningTotal)
+
                     if (chosenProduct.stock_quantity < howMany) {
                         console.log('Order exceeds available supply. Please try again...\n')
 
@@ -103,9 +107,10 @@ function customerPrompt() {
                         customerPrompt();
                     } else if (chosenProduct.stock_quantity > howMany) {
 
+                
                         var newTotal = chosenProduct.stock_quantity - howMany;
 
-                        updateProduct(chosenProduct.product_name, newTotal);
+                        updateProduct(newTotal, productSalesRunningTotal, chosenProduct.product_name);
                         
                         console.log('\n\nSales receipt____________________________________________________'.bold.yellow)
                         console.log(
@@ -122,20 +127,23 @@ function customerPrompt() {
         })
 }
 
-function updateProduct(product_name, stock_quantity) {
+function updateProduct(stock_quantity, product_sales, product_name) {
     // console.log("Updating all record quantities...\n");
     connection.query('UPDATE products SET ? WHERE ?',
         [
             {
-                stock_quantity: stock_quantity
+                stock_quantity: stock_quantity,
+                product_sales: product_sales
+                
             },
             {
                 product_name: product_name
+                
             }
         ],
         function (err, res) {
             if (err) throw err;
-            // console.log(res.affectedRows + " products updated! \n")
+            console.log(product_sales)
 
         },
     );

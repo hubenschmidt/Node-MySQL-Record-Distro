@@ -12,7 +12,9 @@ CREATE TABLE products (
     department_name VARCHAR(64) NULL,
     price DECIMAL(10,2) NULL,
     stock_quantity INTEGER NULL,
+    product_sales INTEGER NULL,
     PRIMARY KEY (id)
+    
 );
 
 INSERT INTO products (product_name, artist_name, title, department_name, price, stock_quantity)
@@ -28,3 +30,13 @@ VALUES
 ("Aphex Twin - Selected Ambient Works Volume II", "Aphex Twin", "Selected Ambient Works Volume II", "Electronic", 15.99, 16000),
 ("African Head Charge - Environmental Studies", "African Head Charge", "Environmental Studies", "Dub", 12.99, 800),
 ("Lee Perry - Arkology", "Lee Perry", "Arkology", "Dub", 13.99, 1000);
+
+CREATE TABLE departments (
+    department_id INTEGER NOT NULL AUTO_INCREMENT,
+    department_name VARCHAR(256) NOT NULL,
+    over_head_costs DECIMAL(10,2) NULL,
+    id INTEGER NOT NULL,
+    PRIMARY KEY (department_id),
+    FOREIGN KEY (id) REFERENCES products(id)
+
+)
