@@ -82,9 +82,7 @@ function customerPrompt() {
                             return false;
                         }
                     }
-                ])
-
-                .then(function (answer) {
+                ]).then(function (answer) {
                     var chosenProduct;
                     for (var i = 0; i < res.length; i++) {
                         if (res[i].product_name === answer.buyWhat) {
@@ -94,7 +92,7 @@ function customerPrompt() {
 
                     var howMany = parseInt(answer.howMany)
 
-                    var buyWhat = answer.buyWhat
+                    // var buyWhat = answer.buyWhat
 
                     var grandTotal = chosenProduct.price * howMany;
 
@@ -107,10 +105,10 @@ function customerPrompt() {
 
                         var newTotal = chosenProduct.stock_quantity - howMany;
 
-                        updateProduct(buyWhat, newTotal);
+                        updateProduct(chosenProduct.product_name, newTotal);
 
                         console.log(
-                            'Thank you for purchasing ' + howMany + ' copies of ' + buyWhat + '. \n',
+                            'Thank you for purchasing ' + howMany + ' copies of ' + chosenProduct.product_name + '. \n',
                             'Your total is $' + grandTotal.toFixed(2)
 
                         )

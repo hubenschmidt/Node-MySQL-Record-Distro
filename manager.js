@@ -18,9 +18,6 @@ var mysql = require('mysql');
 var inquirer = require('inquirer');
 var colors = require('colors');
 
-var recordDistroCustomer = require('./recordDistroCustomer')
-
-
 var connection = mysql.createConnection({
     host: 'localhost',
     port: 8889,
@@ -88,7 +85,7 @@ function menuOptions() {
         })
 }
 
-function listProducts(res){
+function listProducts(res) {
     for (i = 0; i < res.length; i++) {
         console.log(
             ('ID: ' + res[i].id + ' | ' +
@@ -118,7 +115,7 @@ function viewLowInventory() {
     connection.query('SELECT *  FROM products WHERE stock_quantity < 1000', function (err, result) {
         if (err) throw err;
 
-       listProducts(result);
+        listProducts(result);
 
         // console.log('\ntest'.black.bgCyan+'\n')
         exitView()
@@ -129,25 +126,103 @@ function viewLowInventory() {
 
 //   * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store.
 
-function addInventory(){
+function addInventory() {
 
-    connection.query('SELECT * FROM products', function(err, res){
+    connection.query('SELECT * FROM products', function (err, res) {
         if (err) throw err;
 
-        recordDistroCustomer.whatHowMany
+        connection.query('SELECT * FROM products',
+            function (err, res) {
+                if (err) throw err;
+                inquirer
+                    .prompt([
+                        {
+                            name: 'listWhat',
+                            type: 'rawlist',
+                            message: 'Select item to add  stock',
+                            choices: function () {
+                                var choiceArr = [];
+                                for (var i = 0; i < res.length; i++) {
+                                    choiceArr.push(res[i].product_name);
+                                }
+                                return choiceArr;
+                            }
+                        },
+                        {
+                            name: 'howMany',
+                            type: 'input',
+                            message: 'How many copies?',
+                            validate: function (value) {
+                                if (isNaN(value) === false) {
+                                    return true;
+                                }
+                                return false;
+                            }
+                        }
 
-      
+                    ]).then(function (answer) {
+                        var selectedItem;
+
+                        for (var i = 0; i < res.length; i++) {
+                            if (res[i].product_name === answer.listWhat) {
+                                selectedItem = res[i];
+                                console.log(selectedItem.product_name)
+                            }
+                        };
+
+                        var howMany = parseInt(answer.howMany)
+
+                        // var listWhat = answer.listWhat
+
+                        var query = connection.query('UPDATE products SET ? WHERE ?',
+                            [
+                                {
+                                    stock_quantity: selectedItem.stock_quantity + howMany,
+                                },
+                                {
+                                    product_name: selectedItem.product_name
+                                }
+                            ],
+                            function (err, res) {
+                                if (err) throw err;
+
+                                console.log(query.sql)
+                                console.log(res.affectedRows + '  ' + selectedItem.product_name + ' product updated!')
+                            }
+
+                        )
+
+
+
+                        // var query = connection.query('INSERT INTO products SET ?',
+                        // {
+                        //     // id: selectedItem.id,
+                        //     artist_name: selectedItem.artist_name,
+                        //     title:  selectedItem.title,
+                        //     product_name: selectedItem.product_name,
+                        //     department_name: selectedItem.department_name,
+                        //     price: selectedItem.price,
+                        //     stock_quantity: howMany
+                        // },  
+
+                        // function (err, res){
+                        //     if (err) throw err;
+                        //     console.log(res.affectedRows + 'product inserted!\n')
+
+                        // })
+                    })
+            }
+        )
+
+
     })
 }
 
 
+// connection.query('INSERT INTO products SET ?',
+// {
 
-
-
-    // connection.query('INSERT INTO products SET ?',
-    // {
-        
-    // })
+// })
 
 
 
