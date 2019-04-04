@@ -9,7 +9,8 @@ var connection = mysql.createConnection({
     port: 8889,
     user: 'root',
     password: 'root',
-    database: 'recordDistro_db'
+    database: 'recordDistro_db',
+    multipleStatements: true
 })
 
 //first display all of the items available for sale. Include the ids, names, and prices of products for sale.
@@ -33,7 +34,7 @@ function readProducts() {
         for (i = 0; i < res.length; i++){
             if (res[i].stock_quantity > 0){
                 console.log(
-                    res[i].id +  ' | ' + 
+                    res[i].unique_id +  ' | ' + 
                     '$' + res[i].price.toFixed(2) + 
                     ' | ' + res[i].product_name
                     );
@@ -98,7 +99,7 @@ function customerPrompt() {
 
                     var productSalesRunningTotal = chosenProduct.product_sales + grandTotal
 
-                    console.log(productSalesRunningTotal)
+
 
                     if (chosenProduct.stock_quantity < howMany) {
                         console.log('Order exceeds available supply. Please try again...\n')
@@ -110,7 +111,9 @@ function customerPrompt() {
                 
                         var newTotal = chosenProduct.stock_quantity - howMany;
 
-                        updateProduct(newTotal, productSalesRunningTotal, chosenProduct.product_name);
+                        updateProduct(newTotal, productSalesRunningTotal, chosenProduct.product_name, chosenProduct.department_name, chosenProduct.price, howMany);
+
+                      
                         
                         console.log('\n\nSales receipt____________________________________________________'.bold.yellow)
                         console.log(
@@ -127,26 +130,58 @@ function customerPrompt() {
         })
 }
 
-function updateProduct(stock_quantity, product_sales, product_name) {
-    // console.log("Updating all record quantities...\n");
-    connection.query('UPDATE products SET ? WHERE ?',
-        [
-            {
-                stock_quantity: stock_quantity,
-                product_sales: product_sales
-                
-            },
-            {
-                product_name: product_name
-                
-            }
-        ],
-        function (err, res) {
-            if (err) throw err;
-            console.log(product_sales)
+function updateProduct(stock_quantity, product_sales, product_name, department_name, price, howMany) {
 
+    // connection.query('SELECT * FROM departments', function(err,res){
+    //     if (err) throw err
+    
+    //     var overheadRunningCount = overheadCostPerOrder + res.over_head_costs;
+    
+    //     console.log(overheadRunningCount)
+    // })
+
+
+    var overheadCostPerOrder = Math.trunc(price)*howMany
+  
+        var sql = 'UPDATE products SET ? WHERE ?;INSERT INTO departments SET ?';
+
+console.log("Updating all record quantities...\n");
+    connection.query(sql, 
+        [
+        {
+            stock_quantity: stock_quantity,
+            product_sales: product_sales
+            
         },
-    );
+        {
+            product_name: product_name
+            
+        },
+        {
+            department_name: department_name,
+            over_head_costs: overheadCostPerOrder
+        }
+    ], function(err, results, fields) {
+        if (err) throw err
+        
+        console.log(results[0]);
+        console.log(results[1]);
+    });
+
+
+
     connection.end()
-    // console.log(query.sql);
+    
 }
+
+
+
+
+
+
+
+
+
+    
+
+    

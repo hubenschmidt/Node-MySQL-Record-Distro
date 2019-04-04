@@ -18,15 +18,7 @@ connection.connect(function (err) {
 
 })
 
-///////DATABASE WARNING\\\\\\\\
-////////////proceed no further
-//if not first ye..............
-///////////////\\\\\\\\\\\\\\\\
-//////////DEDUPLICATE!\\\\\\\\\\
-//////////////\\\\\\\\\\\\\\\\\\
-//☠☠☠☠☠☠☠☠  or  ☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠
-//Risk the Sea of Infinite Peril 
-//☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠☠
+//remove dupes
 function removeDupes(names){
     var unique = {};
     names.forEach(function(i){
@@ -91,7 +83,7 @@ function menuOptions() {
 function listProducts(res) {
     for (i = 0; i < res.length; i++) {
         console.log(
-            ('ID: ' + res[i].id + ' | ' +
+            ('ID: ' + res[i].unique_id + ' | ' +
                 'quantity: ' + res[i].stock_quantity + ' | ' +
                 'price: $' + res[i].price.toFixed(2) + ' | ' +
                 'title: ' + res[i].product_name)

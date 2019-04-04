@@ -5,7 +5,7 @@ CREATE DATABASE recordDistro_db;
 USE recordDistro_db;
 
 CREATE TABLE products (
-    id INTEGER NOT NULL AUTO_INCREMENT,
+    unique_id INTEGER NOT NULL AUTO_INCREMENT,
     product_name VARCHAR(256) NOT NULL,
     artist_name VARCHAR(256) NOT NULL,
     title VARCHAR(256) NOT NULL,
@@ -13,8 +13,7 @@ CREATE TABLE products (
     price DECIMAL(10,2) NULL,
     stock_quantity INTEGER NULL,
     product_sales INTEGER NULL,
-    PRIMARY KEY (id)
-    
+    PRIMARY KEY (unique_id)
 );
 
 INSERT INTO products (product_name, artist_name, title, department_name, price, stock_quantity)
@@ -35,8 +34,20 @@ CREATE TABLE departments (
     department_id INTEGER NOT NULL AUTO_INCREMENT,
     department_name VARCHAR(256) NOT NULL,
     over_head_costs DECIMAL(10,2) NULL,
-    id INTEGER NOT NULL,
-    PRIMARY KEY (department_id),
-    FOREIGN KEY (id) REFERENCES products(id)
-
+    PRIMARY KEY (department_id)
 )
+
+-- //execute last
+-- CREATE TABLE orders (
+--     order_id INTEGER NOT NULL AUTO_INCREMENT,
+--     product_name VARCHAR(256) NOT NULL,
+--     artist_name VARCHAR(256) NOT NULL,
+--     title VARCHAR(256) NOT NULL,
+--     department_name VARCHAR(64) NULL,
+--     quantity_purchased INTEGER NULL,
+--     total DECIMAL(10,2) NULL,
+--     product_sales INTEGER NULL,
+--     unique_id INTEGER NOT NULL,
+--     PRIMARY KEY (order_id),
+--     FOREIGN KEY (unique_id) REFERENCES products(unique_id)
+-- )
