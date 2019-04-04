@@ -85,14 +85,13 @@ function customerPrompt() {
                 ]).then(function (answer) {
                     var chosenProduct;
                     for (var i = 0; i < res.length; i++) {
+
                         if (res[i].product_name === answer.buyWhat) {
                             chosenProduct = res[i];
                         }
                     };
 
                     var howMany = parseInt(answer.howMany)
-
-                    // var buyWhat = answer.buyWhat
 
                     var grandTotal = chosenProduct.price * howMany;
 
@@ -103,14 +102,13 @@ function customerPrompt() {
                     if (chosenProduct.stock_quantity < howMany) {
                         console.log('Order exceeds available supply. Please try again...\n')
 
-                        // connection.end();
                         customerPrompt();
                     } else if (chosenProduct.stock_quantity > howMany) {
 
 
                         var newTotal = chosenProduct.stock_quantity - howMany;
 
-                       
+
 
                         updateProduct(
                             newTotal,
@@ -151,21 +149,17 @@ function updateProduct(
     howMany
 ) {
 
-
     //check to see if departments table is empty
     connection.query('SELECT * FROM departments', function (err, row, res, fields) {
 
         var deptTableChecker;
         for (var i = 0; i < row.length; i++) {
-            if (row[i].department_name.includes(department_name)){
+            if (row[i].department_name.includes(department_name)) {
                 deptTableChecker = row[i].department_name
-                
+
             }
+        }
 
-
-    }
-
-    
         if (err) {
             return console.log('err1');
         } else if (!row || !row[0]) {
@@ -180,97 +174,78 @@ function updateProduct(
             )
 
             updateTables()
-        } 
-
-            //if department name is already listed on department table
-         else if (deptTableChecker){
-            updateTables()
-         } else if (!deptTableChecker){
-
-            connection.query('INSERT INTO departments SET ?',
-            {
-                over_head_costs: overheadCostPerOrder,
-                department_name: department_name
-            },
-        )
-             updateTables()
-         }
-
-
-
-
-function updateTables(){
-    connection.query('SELECT * FROM departments', function (err, res) {
-        if (err) throw err
-        console.log(department_name+ ' does this work')
-
-        for (var i = 0; i < res.length; i++) {
-            if (res[i].department_name.includes(department_name) ) {
-
-                var deptArr = res[i];
-                var overheadRunningCount = overheadCostPerOrder + deptArr.over_head_costs;
-            }
-
         }
 
-        var sql = 'UPDATE products SET ? WHERE ?;UPDATE departments SET ? WHERE ?;INSERT INTO orders SET ?;'
+        //if department name is already listed on department table
+        else if (deptTableChecker) {
+            updateTables()
+        } else if (!deptTableChecker) {
 
-        connection.query(sql,
-            [
+            connection.query('INSERT INTO departments SET ?',
                 {
-                    stock_quantity: stock_quantity,
-                    product_sales: product_sales
-
-                },
-                {
-                    product_name: product_name
-
-                },
-                {
-                    over_head_costs: overheadRunningCount
-
-                },
-                {
+                    over_head_costs: overheadCostPerOrder,
                     department_name: department_name
                 },
-                {
-                    product_name: product_name,
-                    artist_name: artist_name,
-                    title: title,
-                    department_name: department_name,
-                    quantity_purchased: howMany,
-                    total: total,
-                    unit_price: price
+            )
+            updateTables()
+        }
+
+
+        function updateTables() {
+            connection.query('SELECT * FROM departments', function (err, res) {
+                if (err) throw err
+
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].department_name.includes(department_name)) {
+
+                        var deptArr = res[i];
+                        var overheadRunningCount = overheadCostPerOrder + deptArr.over_head_costs;
+                    }
 
                 }
 
-            ], function (err, res) {
-                if (err) throw err
+                var sql = 'UPDATE products SET ? WHERE ?;UPDATE departments SET ? WHERE ?;INSERT INTO orders SET ?;'
 
-            });
+                connection.query(sql,
+                    [
+                        {
+                            stock_quantity: stock_quantity,
+                            product_sales: product_sales
 
-        connection.end()
+                        },
+                        {
+                            product_name: product_name
 
-    })
+                        },
+                        {
+                            over_head_costs: overheadRunningCount
 
-} 
+                        },
+                        {
+                            department_name: department_name
+                        },
+                        {
+                            product_name: product_name,
+                            artist_name: artist_name,
+                            title: title,
+                            department_name: department_name,
+                            quantity_purchased: howMany,
+                            total: total,
+                            unit_price: price
 
-// else {
-//             connection.query( connection.query('INSERT INTO departments SET ?',
-//             {
-//                 over_head_costs: overheadCostPerOrder,
-//                 department_name: department_name
-//             },
-//         ))
+                        }
 
+                    ], function (err, res) {
+                        if (err) throw err
 
-//         }
-    
+                    });
 
+                connection.end()
+
+            })
+        }
     }
     )
-
-
 }
 
 
