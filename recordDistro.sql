@@ -37,7 +37,7 @@ CREATE TABLE departments (
     PRIMARY KEY (department_id)
 )
 
-//EXECUTE THIS QUERY AFTER IMPORT
+-- //EXECUTE THIS QUERY AFTER IMPORT
 -- CREATE TABLE orders (
 --     order_id INTEGER NOT NULL AUTO_INCREMENT,
 --     product_name VARCHAR(256) NOT NULL,
@@ -47,6 +47,5 @@ CREATE TABLE departments (
 --     quantity_purchased INTEGER NULL,
 --     total DECIMAL(10,2) NULL,
 --     unit_price DECIMAL(10,2) NULL,
---     unique_id INTEGER NOT NULL,
 --     PRIMARY KEY (order_id)
 -- )

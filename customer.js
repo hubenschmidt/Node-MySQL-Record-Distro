@@ -49,7 +49,6 @@ function readProducts() {
     customerPrompt();
 }
 
-
 function customerPrompt() {
 
     //query the database for all items listed in products table
@@ -111,6 +110,8 @@ function customerPrompt() {
 
                         var newTotal = chosenProduct.stock_quantity - howMany;
 
+                       
+
                         updateProduct(
                             newTotal,
                             productSalesRunningTotal, chosenProduct.product_name, chosenProduct.department_name,
@@ -121,8 +122,6 @@ function customerPrompt() {
                             overheadCostPerOrder,
                             howMany
                         );
-
-
 
                         console.log('\n\nSales receipt____________________________________________________'.bold.yellow)
                         console.log(
@@ -139,7 +138,6 @@ function customerPrompt() {
         })
 }
 
-
 function updateProduct(
     stock_quantity,
     product_sales,
@@ -153,14 +151,21 @@ function updateProduct(
     howMany
 ) {
 
+
     //check to see if departments table is empty
     connection.query('SELECT * FROM departments', function (err, row, res, fields) {
-        var deptTableChecker
+
+        var deptTableChecker;
         for (var i = 0; i < row.length; i++) {
-            if (row[i].department_name === department_name){
+            if (row[i].department_name.includes(department_name)){
                 deptTableChecker = row[i].department_name
+                
             }
+
+
     }
+
+    
         if (err) {
             return console.log('err1');
         } else if (!row || !row[0]) {
@@ -174,86 +179,93 @@ function updateProduct(
                 },
             )
 
+            updateTables()
         } 
-         else if (
-            department_name === deptTableChecker) 
-            {
-            connection.query('SELECT * FROM departments', function (err, res) {
-                if (err) throw err
 
-                for (var i = 0; i < res.length; i++) {
-                    if (res[i].department_name === department_name) {
+            //if department name is already listed on department table
+         else if (deptTableChecker){
+            updateTables()
+         } else if (!deptTableChecker){
 
-                        var deptArr = res[i];
-
-                        console.log(deptArr.over_head_costs)
-
-
-                        var overheadRunningCount = overheadCostPerOrder + deptArr.over_head_costs;
-
-                        console.log(overheadRunningCount)
-
-                    }
-
-                }
-
-                var sql = 'UPDATE products SET ? WHERE ?;UPDATE departments SET ? WHERE ?;INSERT INTO orders SET ?;'
-
-                connection.query(sql,
-                    [
-                        {
-                            stock_quantity: stock_quantity,
-                            product_sales: product_sales
-
-                        },
-                        {
-                            product_name: product_name
-
-                        },
-                        {
-                            over_head_costs: overheadRunningCount
-
-                        },
-                        {
-                            department_name: department_name
-                        },
-                        {
-                            product_name: product_name,
-                            artist_name: artist_name,
-                            title: title,
-                            department_name: department_name,
-                            quantity_purchased: howMany,
-                            total: total,
-                            unit_price: price
-
-                        }
-
-                    ], function (err, res) {
-                        if (err) throw err
-
-                        // console.log(fields[0]);
-                        // console.log(fields[1]);
-                    });
-
-                // connection.end()
-
-            })
-
-
-        } else {
-            connection.query( connection.query('INSERT INTO departments SET ?',
+            connection.query('INSERT INTO departments SET ?',
             {
                 over_head_costs: overheadCostPerOrder,
                 department_name: department_name
             },
-        ))
+        )
+             updateTables()
+         }
 
+
+
+
+function updateTables(){
+    connection.query('SELECT * FROM departments', function (err, res) {
+        if (err) throw err
+        console.log(department_name+ ' does this work')
+
+        for (var i = 0; i < res.length; i++) {
+            if (res[i].department_name.includes(department_name) ) {
+
+                var deptArr = res[i];
+                var overheadRunningCount = overheadCostPerOrder + deptArr.over_head_costs;
+            }
 
         }
 
+        var sql = 'UPDATE products SET ? WHERE ?;UPDATE departments SET ? WHERE ?;INSERT INTO orders SET ?;'
 
+        connection.query(sql,
+            [
+                {
+                    stock_quantity: stock_quantity,
+                    product_sales: product_sales
+
+                },
+                {
+                    product_name: product_name
+
+                },
+                {
+                    over_head_costs: overheadRunningCount
+
+                },
+                {
+                    department_name: department_name
+                },
+                {
+                    product_name: product_name,
+                    artist_name: artist_name,
+                    title: title,
+                    department_name: department_name,
+                    quantity_purchased: howMany,
+                    total: total,
+                    unit_price: price
+
+                }
+
+            ], function (err, res) {
+                if (err) throw err
+
+            });
+
+        connection.end()
+
+    })
+
+} 
+
+// else {
+//             connection.query( connection.query('INSERT INTO departments SET ?',
+//             {
+//                 over_head_costs: overheadCostPerOrder,
+//                 department_name: department_name
+//             },
+//         ))
+
+
+//         }
     
-
 
     }
     )
