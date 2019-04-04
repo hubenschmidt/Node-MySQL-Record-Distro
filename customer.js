@@ -99,7 +99,7 @@ function customerPrompt() {
 
                     var productSalesRunningTotal = chosenProduct.product_sales + grandTotal
 
-
+                    var overheadCostPerOrder = Math.trunc(chosenProduct.price)*howMany;
 
                     if (chosenProduct.stock_quantity < howMany) {
                         console.log('Order exceeds available supply. Please try again...\n')
@@ -111,7 +111,7 @@ function customerPrompt() {
                 
                         var newTotal = chosenProduct.stock_quantity - howMany;
 
-                        updateProduct(newTotal, productSalesRunningTotal, chosenProduct.product_name, chosenProduct.department_name, chosenProduct.price, howMany);
+                        updateProduct(newTotal, productSalesRunningTotal, chosenProduct.product_name, chosenProduct.department_name, overheadCostPerOrder, chosenProduct.price, howMany);
 
                       
                         
@@ -130,20 +130,29 @@ function customerPrompt() {
         })
 }
 
-function updateProduct(stock_quantity, product_sales, product_name, department_name, price, howMany) {
+function updateProduct(stock_quantity, product_sales, product_name, department_name, overheadCostPerOrder, price, howMany) {
 
-    // connection.query('SELECT * FROM departments', function(err,res){
-    //     if (err) throw err
-    
-    //     var overheadRunningCount = overheadCostPerOrder + res.over_head_costs;
-    
-    //     console.log(overheadRunningCount)
-    // })
+    connection.query('SELECT * FROM departments', function(err,res){
+        if (err) throw err
 
+        
+    for (var i = 0; i < res.length; i++) {
+        if (res[i].department_name === department_name) {
 
-    var overheadCostPerOrder = Math.trunc(price)*howMany
+            deptArr = res[i];
+            
+        }
+        
+        var overheadRunningCount = overheadCostPerOrder + deptArr.over_head_costs;
+
+        // console.log('logging' + deptArr.over_head_costs)
+        // console.log(overheadRunningCount)
+
+    };
+
+    console.log(overheadRunningCount)
   
-        var sql = 'UPDATE products SET ? WHERE ?;INSERT INTO departments SET ?';
+        var sql = 'UPDATE products SET ? WHERE ?;UPDATE departments SET ? WHERE ?';
 
 console.log("Updating all record quantities...\n");
     connection.query(sql, 
@@ -158,21 +167,25 @@ console.log("Updating all record quantities...\n");
             
         },
         {
-            department_name: department_name,
-            over_head_costs: overheadCostPerOrder
+            over_head_costs: overheadRunningCount
+        },
+        {
+            department_name: department_name
         }
-    ], function(err, results, fields) {
+    ], function(err, res) {
         if (err) throw err
         
-        console.log(results[0]);
-        console.log(results[1]);
+        // console.log(fields[0]);
+        // console.log(fields[1]);
     });
 
-
-
     connection.end()
-    
+
+   
+}) 
 }
+
+
 
 
 
