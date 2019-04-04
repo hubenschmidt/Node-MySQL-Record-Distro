@@ -155,36 +155,15 @@ function updateProduct(
 
     //check to see if departments table is empty
     connection.query('SELECT * FROM departments', function (err, row, res, fields) {
-        for (i = 0; i < row.length; i++) {
-            var deptTableChecker = row[i].department_name
-
-            console.log(deptTableChecker)
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
+        var deptTableChecker
+        for (var i = 0; i < row.length; i++) {
+            if (row[i].department_name === department_name){
+                deptTableChecker = row[i].department_name
+            }
+    }
         if (err) {
             return console.log('err1');
         } else if (!row || !row[0]) {
-
             console.log('updating first row')
 
             //if table is blank, insert into departments
@@ -196,10 +175,8 @@ function updateProduct(
             )
 
         } 
-        
-        else if (
+         else if (
             department_name === deptTableChecker) 
-        
             {
             connection.query('SELECT * FROM departments', function (err, res) {
                 if (err) throw err
@@ -219,9 +196,6 @@ function updateProduct(
                     }
 
                 }
-
-
-
 
                 var sql = 'UPDATE products SET ? WHERE ?;UPDATE departments SET ? WHERE ?;INSERT INTO orders SET ?;'
 
@@ -266,10 +240,21 @@ function updateProduct(
             })
 
 
+        } else {
+            connection.query( connection.query('INSERT INTO departments SET ?',
+            {
+                over_head_costs: overheadCostPerOrder,
+                department_name: department_name
+            },
+        ))
+
+
         }
 
 
-    }//for loop end
+    
+
+
     }
     )
 
