@@ -154,10 +154,38 @@ function updateProduct(
 ) {
 
     //check to see if departments table is empty
-    connection.query('SELECT * FROM departments', function (err, row, res) {
+    connection.query('SELECT * FROM departments', function (err, row, res, fields) {
+        for (i = 0; i < row.length; i++) {
+            var deptTableChecker = row[i].department_name
+
+            console.log(deptTableChecker)
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
         if (err) {
             return console.log('err1');
-        } else if (!row.length) {
+        } else if (!row || !row[0]) {
+
+            console.log('updating first row')
 
             //if table is blank, insert into departments
             connection.query('INSERT INTO departments SET ?',
@@ -165,44 +193,52 @@ function updateProduct(
                     over_head_costs: overheadCostPerOrder,
                     department_name: department_name
                 },
-                function (err, res) {
-                    if (err) throw err
+            )
 
-                })
-        } else {
-
+        } 
+        
+        else if (
+            department_name === deptTableChecker) 
+        
+            {
             connection.query('SELECT * FROM departments', function (err, res) {
                 if (err) throw err
-        
+
                 for (var i = 0; i < res.length; i++) {
                     if (res[i].department_name === department_name) {
-        
+
                         var deptArr = res[i];
-                        
-        
+
+                        console.log(deptArr.over_head_costs)
+
+
                         var overheadRunningCount = overheadCostPerOrder + deptArr.over_head_costs;
-        
+
                         console.log(overheadRunningCount)
-        
+
                     }
-        
+
                 }
+
+
+
+
                 var sql = 'UPDATE products SET ? WHERE ?;UPDATE departments SET ? WHERE ?;INSERT INTO orders SET ?;'
-        
+
                 connection.query(sql,
                     [
                         {
                             stock_quantity: stock_quantity,
                             product_sales: product_sales
-        
+
                         },
                         {
                             product_name: product_name
-        
+
                         },
                         {
                             over_head_costs: overheadRunningCount
-                            
+
                         },
                         {
                             department_name: department_name
@@ -215,26 +251,29 @@ function updateProduct(
                             quantity_purchased: howMany,
                             total: total,
                             unit_price: price
-        
+
                         }
-        
+
                     ], function (err, res) {
                         if (err) throw err
-        
+
                         // console.log(fields[0]);
                         // console.log(fields[1]);
                     });
-        
-                connection.end()
-    
+
+                // connection.end()
+
             })
-  
-            
+
+
         }
+
+
+    }//for loop end
     }
     )
 
-    
+
 }
 
 
