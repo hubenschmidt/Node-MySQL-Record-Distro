@@ -32,12 +32,12 @@ VALUES
 
 CREATE TABLE departments (
     department_id INTEGER NOT NULL AUTO_INCREMENT,
-    department_name VARCHAR(256) NOT NULL,
+    department_name VARCHAR(256) NULL,
     over_head_costs DECIMAL(10,2) NULL,
     PRIMARY KEY (department_id)
 )
 
--- //execute last
+//EXECUTE THIS QUERY AFTER IMPORT
 -- CREATE TABLE orders (
 --     order_id INTEGER NOT NULL AUTO_INCREMENT,
 --     product_name VARCHAR(256) NOT NULL,
@@ -46,8 +46,7 @@ CREATE TABLE departments (
 --     department_name VARCHAR(64) NULL,
 --     quantity_purchased INTEGER NULL,
 --     total DECIMAL(10,2) NULL,
---     product_sales INTEGER NULL,
+--     unit_price DECIMAL(10,2) NULL,
 --     unique_id INTEGER NOT NULL,
---     PRIMARY KEY (order_id),
---     FOREIGN KEY (unique_id) REFERENCES products(unique_id)
+--     PRIMARY KEY (order_id)
 -- )
