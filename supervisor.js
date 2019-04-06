@@ -64,33 +64,39 @@ var bread
    
 
     res[0].forEach(function(element, index, array) {
-        // console.log(element);
-        // console.log(index)
 
-    //    console.log(element.rebelmuzik)
+    var val = 'fadsafds'
+    var t;
 
-    // function buildReport(){
-    // var string = 'value';
-    // var blankSpace = '|              |';
-    // var length = 16;
-    // var addString = string+blankSpace
-    // var trimmedString = addString.substring(0, length);
-    // // return trimmedString;
-    // console.log(trimmedString)
-
-    // }
-
- 
-    // add value to blank report 
-    var string = 'yo';
-    var blankSpace = '                ';
-    var length = 16;
-    var addString = string+blankSpace;
-    // var trimmedString = addString.substring(0, length);
-
-    var t = addString.slice(0,15)+'|'
+    function cell(value){
+        var string = value;
+        var blankSpace = '                ';
+        var addString = string+blankSpace;
+        t = addString.slice(0,15)+'|'
+        
     console.log(t)
+    }
 
+    cell(val)
+
+
+    // console.log(Object.keys(element))
+
+
+
+
+
+    function columnHeader(){
+
+    }
+
+   
+
+            // console.log(
+            //     // '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
+            //     // '| ------------- | --------------- | --------------- | ------------- | ------------ |\n' +
+            //     report
+            // )
     
 
     // function truncate(str, length, ending) {
@@ -115,11 +121,6 @@ var bread
   
                 // var report = buildReport(element.babylon) + '             | ' + element.rebelmuzik + '        | ' + element.working4DeRentMon + '              | ' + element.herbManIsa_HerbManHustling + '           | ' +  + '           |\n' 
 
-            // console.log(
-            //     // '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
-            //     // '| ------------- | --------------- | --------------- | ------------- | ------------ |\n' +
-            //     report
-            // )
 
       });
 
