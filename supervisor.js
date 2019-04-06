@@ -61,7 +61,7 @@ function viewProductsByDept() {
 
 
         var bread
-        var propertyNamesArr = [];
+        
         var valuesArr = []
 
 
@@ -70,10 +70,35 @@ function viewProductsByDept() {
             var val = 'fadsafds'
             var hell = 'hell'
             var t;
+            var propertyNamesArr = [];
+           
 
+            //make list of unique report headers
             if (Object.keys(array[0])[index] != undefined){
-                console.log(Object.keys(array[0])[index])
+                propertyNamesArr.push(Object.keys(array[0])[index])
+                console.log(propertyNamesArr)
             }
+
+            //make list of all report values
+
+            valuesArr.push(Object.values(element))
+           
+            console.log(valuesArr[index])
+         
+
+            // console.log(valuesArr)
+
+            function cell(value) {
+                cellArr = [];
+                var string = value;
+                var blankSpace = '                ';
+                var addString = string + blankSpace;
+                t = addString.slice(0, 15) + '|'
+                cellArr.push(t)
+                console.log(cellArr)
+            }
+
+
             
 
 
@@ -97,10 +122,8 @@ function viewProductsByDept() {
             // console.log(_.uniq(newPropertyNames)) 
 
             
-            // valuesArr.push(Object.values(element))
+           
 
-            // var uniqueKeys = _.uniq(propertyNamesArr[0])
-            // console.log(uniqueKeys)
 
             // console.log(_.uniq(propertyNamesArr[0][0]))
         
@@ -109,17 +132,7 @@ function viewProductsByDept() {
 
 
         
-            function cell(value) {
-                cellArr = [];
-                var string = value;
-                var blankSpace = '                ';
-                var addString = string + blankSpace;
-                t = addString.slice(0, 15) + '|'
-                cellArr.push(t)
-                console.log(cellArr)
-
-
-            }
+           
 
             // valuesArr[0].forEach(function (element){
             //    var x = cell(element)
