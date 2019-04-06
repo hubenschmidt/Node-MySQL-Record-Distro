@@ -68,10 +68,19 @@ function viewProductsByDept() {
             var val = 'fadsafds'
             var hell = 'hell'
             var t;
-            var cellArr = [];
+            var propertyNamesArr = [];
+            var valuesArr = []
+            
 
+            propertyNamesArr.push(Object.getOwnPropertyNames(element))
 
+            valuesArr.push(Object.values(element))
+
+         
+
+        
             function cell(value) {
+                cellArr = []
                 var string = value;
                 var blankSpace = '                ';
                 var addString = string + blankSpace;
@@ -82,19 +91,16 @@ function viewProductsByDept() {
 
             }
 
-            cell(val)
-            cell(hell)
+            valuesArr[0].forEach(function (element){
+                cell(element)
+                
+
+            })
+            
             
 
-
-            
-
-
-            function columnHeader() {
-
-            }
-
-
+            // cell(val)
+            // cell(hell)
 
             // console.log(
             //     // '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
@@ -127,8 +133,6 @@ function viewProductsByDept() {
 
 
         });
-
-
 
 
 
