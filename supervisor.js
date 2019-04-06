@@ -2,6 +2,7 @@ var mysql = require('mysql');
 var inquirer = require('inquirer');
 var colors = require('colors');
 
+
 //lodash 
 var _ = require('lodash');
 
@@ -53,107 +54,73 @@ function readDepartments() {
             }
         })
 }
+var cellArr
+var t;
 
+function cell(value) {
+    cellArr = []
+    var string = value;
+    var blankSpace = '                ';
+    var addString = string + blankSpace;
+    t = addString.slice(0, 15) + '|'
+    cellArr.push(t)
+    return cellArr
+}
 
 
 function viewProductsByDept() {
     console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
 
 
+
     connection.query('SELECT d.department_id AS babylon, d.department_name AS rebelmuzik, d.over_head_costs AS working4DeRentMon, p.product_sales AS herbManIsa_HerbManHustling, p.department_name FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name;SELECT SUM(product_sales) FROM products', function (err, res) {
         if (err) throw err;
 
-        res[0].forEach(function (element, index, array) {
 
-            var propertyNamesArr = [];
+        //         | department_id | department_name | over_head_costs | product_sales | total_profit |
+        // | ------------- | --------------- | --------------- | ------------- | ------------ |
+        // | 01 | Electronics | 10000 | 20000 | 10000 |
+        // | 02 | Clothing | 60000 | 100000 | 40000
 
-            propertyNamesArr.push(Object.keys(array[0])[index])
 
-            var t;
+        var rows = _.uniq(_.map(res[0]))
 
-            var valuesObjIndex = []
-            var valuesArr = Object.values(element)
-            var valuesObj
-           
+        var string1 = "";
+ 
+        
+        var rowsOne = rows[0].babylon
 
-            var headerIndex = Object.keys(array[0])[index]
-    
-            var reportHeaders = makeReportHeaders(propertyNamesArr)
-           
-            if (headerIndex){
-                console.log(reportHeaders)
-            }
-            
+        for (var rowsOne in rows) {
+            string1 += rows[rows[0].babylon];
+        }
+
+        // console.log(string1);
+        // expected output: "123"
+
+        for (i = 0; i < rows.length; i++) {
+
+
+        rows.forEach(function(element, index, array){
+            var report = ' ' + cell(rows[i].babylon) + ' ' + cell(rows[i].rebelmuzik) + ' ' + cell(rows[i].working4DeRentMon) + ' ' + cell(rows[i].herbManIsa_HerbManHustling) + ' ';
           
-
-            function makeReportHeaders(arr) {
-                //make list of unique report headers
-                if (headerIndex) {
-
-                    var arr = [];
-
-                    arr.push(Object.keys(array[0])[index])
-
-                    //make list of values and create new object of key-value pairs with headers
-                    valuesObjIndex.push(index)
-
-                    var headerObj = _.zipObject(valuesObjIndex, propertyNamesArr);
-
-                    //make list of all report values
-
-                    return headerObj
-                }
-            }
-
-            var myArr = [{ name: "john", age: 23 },
-            { name: "john", age: 43 },
-            { name: "jimi", age: 10 },
-            { name: "bobi", age: 67 }];
-
-            var johns = _.map(myArr, function (o) {
-                if (o.name == "john") return o;
-            });
-
-            // Remove undefines from the array
-            johns = _.without(johns, undefined)
-
-            // if (valuesObj != undefined){
-            //     console.log(_.uniq(valuesObj))
-
-            // var count = 0;
-            // for(var i = 0; i < valuesObj.length; i++){
-            //     if(valuesObj[i])
-            //         count++;
-
-            //     console.log(count)
-            // }
-
-            // }
-
-            // console.log(valuesArr)
-
-            function cell(value) {
-                cellArr = [];
-                var string = value;
-                var blankSpace = '                ';
-                var addString = string + blankSpace;
-                t = addString.slice(0, 15) + '|'
-                cellArr.push(t)
-                // console.log(cellArr)
-            }
-
-            //  valuesArr.forEach(function(index){
-
-            //  })
+            console.log(
+                '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
+                '| ------------- | --------------- | --------------- | ------------- | ------------ |\n' +
+                report
+            )
+            return report
+        })
 
 
-            // console.log(
-            //     // '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
-            //     // '| ------------- | --------------- | --------------- | ------------- | ------------ |\n' +
-            //     report
-            // )
+        }
 
-            // var report = buildReport(element.babylon) + '             | ' + element.rebelmuzik + '        | ' + element.working4DeRentMon + '              | ' + element.herbManIsa_HerbManHustling + '           | ' +  + '           |\n' 
+     
+
+
+
+
+
+        connection.end()
 
 
 
@@ -162,13 +129,95 @@ function viewProductsByDept() {
 
 
 
-        });
 
 
 
-    });
+
+
+
+
+
+
+
+    })
+
 
 }
+
+
+
+
+            // Object.keys(array[0]).forEach(function(element, index, array){
+            //    )
+
+// 
+
+
+
+
+
+
+        // console.log(cellArr)
+
+
+
+
+    // var viewHeaders = makeReportHeaders(headerIndex)
+
+
+    // function customizer(objValue, srcValue) {
+    //     if (_.isArray(objValue)) {
+    //       return objValue.concat(srcValue);
+    //     }
+    //   }
+
+    // var customizer = customizer(valuesObjIndex, headerIndex)
+
+    // return customizer
+
+    // function makeReportHeaders(arr) {
+    //     //make list of unique report headers
+    //     if (headerIndex) {
+
+    //         var arr = [];
+
+    //         arr.push(Object.keys(array[0])[index])
+
+    //         //make list of values and create new object of key-value pairs with headers
+    //         valuesObjIndex.push(index)                
+
+    //     }
+    // }
+
+
+
+
+
+
+    //  valuesArr.forEach(function(index){
+
+    //  })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
