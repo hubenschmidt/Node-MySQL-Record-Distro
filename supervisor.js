@@ -5,8 +5,12 @@ var colors = require('colors');
 //lodash 
 var _ = require('lodash');
 
+
+
 //lodash method category
 var array = require('lodash/array');
+
+var object = require('lodash/object')
 
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -61,30 +65,98 @@ function viewProductsByDept() {
 
 
         var bread
-        
-        var valuesArr = []
 
+    
 
         res[0].forEach(function (element, index, array) {
 
-            var val = 'fadsafds'
-            var hell = 'hell'
             var t;
             var propertyNamesArr = [];
-           
-
-            //make list of unique report headers
-            if (Object.keys(array[0])[index] != undefined){
-                propertyNamesArr.push(Object.keys(array[0])[index])
-                // console.log(propertyNamesArr)
-            }
-
-            //make list of all report values
+            var valuesObjIndex = []
+            
+            var valuesArr = []
 
             valuesArr.push(Object.values(element))
-           
-            console.log(valuesArr[index])
+
+            var valuesObj;
+            // valuesObj = Object.assign(valuesArr[index])
+
+            //make list of unique report headers
+            if (Object.keys(array[0])[index] != undefined) {
+
+
+                propertyNamesArr.push(Object.keys(array[0])[index])
+                // console.log(propertyNamesArr[0])
+
+            //make list of values and create new object of key-value pairs with headers
+                valuesObjIndex.push(index)
+                
+
+                var keyPairArr = valuesObjIndex + '\''
+
+                console.log(_.zipObject(valuesObjIndex, propertyNamesArr));
+
+                
+                // +propertyNamesArr+'\''
+
+                // console.log(keyPairArr)
+
+                // function objectify(arr) {
+                //     return arr.reduce(function(result, currentArray) {
+                //         result[currentArray[0]] = currentArray;
+                //         return result;
+                //     }, {});
+                // }
+
+                // console.log(objectify([keyPairArr]))
+
+//                 console.log(objectify([ [1, 'a'], [2, 'b'], [3, 'c'] ]));
+// # { '1': 'a', '2': 'b', '3': 'c' }
+
+    
+                
+
+                   //make list of all report values
+
+            
+
+
+
+
+            }
+
+        
+          
+
+
          
+
+            
+
+
+          
+
+
+
+            // console.log(valuesObj[index])
+
+            // console.log(_.uniq(valuesObj))
+
+            // if (valuesObj != undefined){
+            //     console.log(_.uniq(valuesObj))
+
+
+            // var count = 0;
+            // for(var i = 0; i < valuesObj.length; i++){
+            //     if(valuesObj[i])
+            //         count++;
+
+            //     console.log(count)
+            // }
+
+            // }
+
+
 
             // console.log(valuesArr)
 
@@ -95,12 +167,12 @@ function viewProductsByDept() {
                 var addString = string + blankSpace;
                 t = addString.slice(0, 15) + '|'
                 cellArr.push(t)
-                console.log(cellArr)
+                // console.log(cellArr)
             }
 
-        //  valuesArr.forEach(function(index){
-            
-        //  })
+            //  valuesArr.forEach(function(index){
+
+            //  })
 
 
             // console.log(
