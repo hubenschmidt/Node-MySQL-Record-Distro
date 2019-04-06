@@ -76,7 +76,7 @@ function viewProductsByDept() {
             //make list of unique report headers
             if (Object.keys(array[0])[index] != undefined){
                 propertyNamesArr.push(Object.keys(array[0])[index])
-                console.log(propertyNamesArr)
+                // console.log(propertyNamesArr)
             }
 
             //make list of all report values
@@ -98,80 +98,16 @@ function viewProductsByDept() {
                 console.log(cellArr)
             }
 
-
+        //  valuesArr.forEach(function(index){
             
+        //  })
 
-
-            // for (i = 0; i <= index; i++){
-            //     console.log('index logged')
-            // }
-        //    console.log(element)
-    
-        //    for (i = 0; i < index; i++){
-        //     propertyNamesArr[index].push(Object.keys(element))
-
-        //    }
-           
-
-            // propertyNamesArr[0].forEach(function(element){
-            //     newPropertyNames = [];
-            //     newPropertyNames.push(element)
-            // })
-
-
-            // console.log(_.uniq(newPropertyNames)) 
-
-            
-           
-
-
-            // console.log(_.uniq(propertyNamesArr[0][0]))
-        
-
-            // console.log(valuesArr[0])
-
-
-        
-           
-
-            // valuesArr[0].forEach(function (element){
-            //    var x = cell(element)
-            //    console.log(x)
-              
-
-            // })
-            
-            
-
-            // cell(val)
-            // cell(hell)
 
             // console.log(
             //     // '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
             //     // '| ------------- | --------------- | --------------- | ------------- | ------------ |\n' +
             //     report
             // )
-
-
-            // function truncate(str, length, ending) {
-
-
-
-            //     if (length == null) {
-            //       length
-            //     }
-            //     if (str.length > length) {
-            //       return str.substring(0, length - ending.length) + ending;
-            //     } 
-
-
-
-            //   };
-
-            //   truncate()
-
-
-
 
             // var report = buildReport(element.babylon) + '             | ' + element.rebelmuzik + '        | ' + element.working4DeRentMon + '              | ' + element.herbManIsa_HerbManHustling + '           | ' +  + '           |\n' 
 
