@@ -61,6 +61,8 @@ function viewProductsByDept() {
 
 
         var bread
+        var propertyNamesArr = [];
+        var valuesArr = []
 
 
         res[0].forEach(function (element, index, array) {
@@ -68,19 +70,47 @@ function viewProductsByDept() {
             var val = 'fadsafds'
             var hell = 'hell'
             var t;
-            var propertyNamesArr = [];
-            var valuesArr = []
+
+            if (Object.keys(array[0])[index] != undefined){
+                console.log(Object.keys(array[0])[index])
+            }
             
 
-            propertyNamesArr.push(Object.getOwnPropertyNames(element))
 
-            valuesArr.push(Object.values(element))
+            // for (i = 0; i <= index; i++){
+            //     console.log('index logged')
+            // }
+        //    console.log(element)
+    
+        //    for (i = 0; i < index; i++){
+        //     propertyNamesArr[index].push(Object.keys(element))
 
-         
+        //    }
+           
+
+            // propertyNamesArr[0].forEach(function(element){
+            //     newPropertyNames = [];
+            //     newPropertyNames.push(element)
+            // })
+
+
+            // console.log(_.uniq(newPropertyNames)) 
+
+            
+            // valuesArr.push(Object.values(element))
+
+            // var uniqueKeys = _.uniq(propertyNamesArr[0])
+            // console.log(uniqueKeys)
+
+            // console.log(_.uniq(propertyNamesArr[0][0]))
+        
+
+            // console.log(valuesArr[0])
+
 
         
             function cell(value) {
-                cellArr = []
+                cellArr = [];
                 var string = value;
                 var blankSpace = '                ';
                 var addString = string + blankSpace;
@@ -91,11 +121,12 @@ function viewProductsByDept() {
 
             }
 
-            valuesArr[0].forEach(function (element){
-                cell(element)
-                
+            // valuesArr[0].forEach(function (element){
+            //    var x = cell(element)
+            //    console.log(x)
+              
 
-            })
+            // })
             
             
 
