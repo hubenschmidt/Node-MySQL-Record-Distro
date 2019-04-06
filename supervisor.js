@@ -69,20 +69,57 @@ var bread
 
     //    console.log(element.rebelmuzik)
 
-    
-    var string = "hubenschmidt";
+    // function buildReport(){
+    // var string = 'value';
+    // var blankSpace = '|              |';
+    // var length = 16;
+    // var addString = string+blankSpace
+    // var trimmedString = addString.substring(0, length);
+    // // return trimmedString;
+    // console.log(trimmedString)
+
+    // }
+
+ 
+    // add value to blank report 
+    var string = 'yo';
     var blankSpace = '                ';
     var length = 16;
-    var addString = string+blankSpace
-    var trimmedString = addString.substring(0, length);
-  
-                var report = '| ' + element.babylon + '             | ' + element.rebelmuzik + '        | ' + element.working4DeRentMon + '              | ' + element.herbManIsa_HerbManHustling + '           | ' + trimmedString + '           |\n' 
+    var addString = string+blankSpace;
+    // var trimmedString = addString.substring(0, length);
 
-            console.log(
-                '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
-                '| ------------- | --------------- | --------------- | ------------- | ------------ |\n' +
-                report
-            )
+    var t = addString.slice(0,15)+'|'
+    console.log(t)
+
+    
+
+    // function truncate(str, length, ending) {
+
+    
+
+    //     if (length == null) {
+    //       length
+    //     }
+    //     if (str.length > length) {
+    //       return str.substring(0, length - ending.length) + ending;
+    //     } 
+
+  
+
+    //   };
+
+    //   truncate()
+
+     
+  
+  
+                // var report = buildReport(element.babylon) + '             | ' + element.rebelmuzik + '        | ' + element.working4DeRentMon + '              | ' + element.herbManIsa_HerbManHustling + '           | ' +  + '           |\n' 
+
+            // console.log(
+            //     // '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
+            //     // '| ------------- | --------------- | --------------- | ------------- | ------------ |\n' +
+            //     report
+            // )
 
       });
 
