@@ -109,9 +109,34 @@ function viewProductsByDept() {
             })
 
         }
+
+
+        console.log(summarizeColumn(rows));
+
+        
+        function summarizeColumn(arr){
+            for (i = 0; i < arr.length; i++){
+                console.log(arr[i])
+
+                var values = [];
+                values.push(Object.values(arr[i]))
+
+                return values
+             } 
+            }
+       
     }
     )
 }
+
+
+
+
+var findOne = function (haystack, arr) {
+    return arr.some(function (v) {
+        return haystack.indexOf(v) >= 0;
+    });
+};
 
 
 
