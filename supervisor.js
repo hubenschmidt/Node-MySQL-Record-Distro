@@ -2,11 +2,8 @@ var mysql = require('mysql');
 var inquirer = require('inquirer');
 var colors = require('colors');
 
-
 //lodash 
 var _ = require('lodash');
-
-
 
 //lodash method category
 var array = require('lodash/array');
@@ -67,109 +64,68 @@ function cell(value) {
     return cellArr
 }
 
+function sumTotals(arr, index) {
+    var sum = 0;
+    for (var i = 0; i < arr.length; i++) {
+        sum += parseInt(arr[index]);
+    }
+    console.log(sum);
+}
 
 function viewProductsByDept() {
+
     console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
-
-
 
     connection.query('SELECT d.department_id AS babylon, d.department_name AS rebelmuzik, d.over_head_costs AS working4DeRentMon, p.product_sales AS herbManIsa_HerbManHustling, p.department_name FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name;SELECT SUM(product_sales) FROM products', function (err, res) {
         if (err) throw err;
 
-
-        //         | department_id | department_name | over_head_costs | product_sales | total_profit |
-        // | ------------- | --------------- | --------------- | ------------- | ------------ |
-        // | 01 | Electronics | 10000 | 20000 | 10000 |
-        // | 02 | Clothing | 60000 | 100000 | 40000
-
-
         var rows = _.uniq(_.map(res[0]))
 
-        var string1 = "";
- 
+        var propertyIndexArr = []
+
+        propertyIndexArr.push(Object.getOwnPropertyNames(res[0][0]));
+
+        firstIndex = propertyIndexArr[0]
+        buildHeaders(firstIndex)
+        buildRows(res[0][0])
         
-        var rowsOne = rows[0].babylon
-
-        for (var rowsOne in rows) {
-            string1 += rows[rows[0].babylon];
-        }
-
-        // console.log(string1);
-        // expected output: "123"
-
-        for (i = 0; i < rows.length; i++) {
 
 
-        rows.forEach(function(element, index, array){
-            var report = ' ' + cell(rows[i].babylon) + ' ' + cell(rows[i].rebelmuzik) + ' ' + cell(rows[i].working4DeRentMon) + ' ' + cell(rows[i].herbManIsa_HerbManHustling) + ' ';
-          
+        function buildHeaders(arr) {
+            var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[3]) + ' ';
             console.log(
-                '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
-                '| ------------- | --------------- | --------------- | ------------- | ------------ |\n' +
-                report
-            )
-            return report
-        })
-
-
+                        '| department_id | department_name| over_head_costs| product_sales | total_profit |'+'\n'+
+                        '| ------------- | ---------------| ---------------| ------------- | ------------ |'+'\n'+
+                        headers+'\n'+
+                        '| ------------- | ---------------| ---------------| ------------- | ------------ |'+'\n'
+                        )
         }
 
-     
+        function buildRows(arr) {
+            rows.forEach(function (element, index, array) {
+                var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[3]) + ' ';
+                console.log(headers +
+                    '\n')
+            })
 
-
-
-
-
-        connection.end()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    })
-
-
+        }
+    }
+    )
 }
 
 
 
+//  overhead.push(res[0][9]);
 
-            // Object.keys(array[0]).forEach(function(element, index, array){
-            //    )
+//             productSales.push(res[i].herbManIsa_HerbManHustling)
 
-// 
+//     var viewHeaders = makeReportHeaders(headerIndex)
 
-
-
-
-
-
-        // console.log(cellArr)
-
-
-
-
-    // var viewHeaders = makeReportHeaders(headerIndex)
-
-
-    // function customizer(objValue, srcValue) {
-    //     if (_.isArray(objValue)) {
-    //       return objValue.concat(srcValue);
-    //     }
-    //   }
+//     function customizer(objValue, srcValue) {
+//         if (_.isArray(objValue)) {
+//           return objValue.concat(srcValue);
+//         }
+//       }
 
     // var customizer = customizer(valuesObjIndex, headerIndex)
 
@@ -189,37 +145,9 @@ function viewProductsByDept() {
     //     }
     // }
 
-
-
-
-
-
     //  valuesArr.forEach(function(index){
 
     //  })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // function viewProductsByDept() {}
