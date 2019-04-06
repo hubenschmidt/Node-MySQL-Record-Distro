@@ -31,6 +31,8 @@ function readProducts() {
     connection.query('SELECT * FROM products', function (err, res) {
         if (err) throw err;
 
+       
+
         for (i = 0; i < res.length; i++) {
             if (res[i].stock_quantity > 0) {
                 console.log(

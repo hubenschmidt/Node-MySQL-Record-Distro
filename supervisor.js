@@ -2,6 +2,12 @@ var mysql = require('mysql');
 var inquirer = require('inquirer');
 var colors = require('colors');
 
+//lodash 
+var _ = require('lodash');
+
+//lodash method category
+var array = require('lodash/array');
+
 var connection = mysql.createConnection({
     host: 'localhost',
     port: 8889,
@@ -17,8 +23,6 @@ connection.connect(function (err) {
 
     readDepartments();
 })
-
-
 
 function readDepartments() {
     console.log('Supervisor View '.bold.red
@@ -44,41 +48,35 @@ function readDepartments() {
 
             }
         })
-
 }
+
+
 
 function viewProductsByDept() {
     console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
-    // ;SELECT SUM(product_sales) FROM products
-    connection.query('SELECT d.department_id AS babylon, d.department_name AS rebelmuzik, d.over_head_costs AS working4DeRentMon, p.product_sales AS herbManIsa_HerbManHustling, p.department_name FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name', 
+
+
+connection.query('SELECT d.department_id AS babylon, d.department_name AS rebelmuzik, d.over_head_costs AS working4DeRentMon, p.product_sales AS herbManIsa_HerbManHustling, p.department_name FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name;SELECT SUM(product_sales) FROM products', function (err, res) {
+    if (err) throw err;
+
+
+var bread
+   
+
+    res[0].forEach(function(element, index, array) {
+        // console.log(element);
+        // console.log(index)
+
+    //    console.log(element.rebelmuzik)
+
     
-    function (err, res) {
-        if (err) throw err;
-
-        console.log(res.length)
-
-        for res in res 
-
-        var propertyArr = []
-
-        propertyArr.push(Object.getOwnPropertyNames(res[0]));
-
-       
-
-        var overhead = [];
-        var productSales = [];
-
-        for (i = 0; i < propertyArr[0].length; i++) {
-
-            // console.log(propertyArr[0].length)
-
-            // var babyArr = []
-
-            // babyArr.push(res[0][i].babylon)
-
-            // console.log(babyArr)
-
-            var report = '| ' + res[0][i].babylon + '             | ' + res[0].rebelmuzik + '      | ' + res[0].working4DeRentMon + '              | ' + res[0].herbManIsa_HerbManHustling + '          | ' + bread + '           |\n' +
+    var string = "hubenschmidt";
+    var blankSpace = '                ';
+    var length = 16;
+    var addString = string+blankSpace
+    var trimmedString = addString.substring(0, length);
+  
+                var report = '| ' + element.babylon + '             | ' + element.rebelmuzik + '        | ' + element.working4DeRentMon + '              | ' + element.herbManIsa_HerbManHustling + '           | ' + trimmedString + '           |\n' 
 
             console.log(
                 '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
@@ -86,6 +84,52 @@ function viewProductsByDept() {
                 report
             )
 
+      });
+
+      
+
+      
+
+});
+
+}
+
+
+
+
+// function viewProductsByDept() {}
+//     console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
+
+//     connection.query('SELECT d.department_id AS babylon, d.department_name AS rebelmuzik, d.over_head_costs AS working4DeRentMon, p.product_sales AS herbManIsa_HerbManHustling, p.department_name FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name;SELECT SUM(product_sales) FROM products', function (err, res) {
+//         if (err) throw err;
+
+//         var propertyArr = []
+
+//         propertyArr.push(Object.getOwnPropertyNames(res[0]));
+
+//         var overhead = [];
+//         var productSales = [];
+
+
+//     _.forEach(res[0], function(value, key) {
+//               console.log(value, key+'lodashhin it');
+
+
+
+//         })
+//     }
+
+        // for (i = 0; i < propertyArr[0].length; i++) {
+
+        //     // console.log(propertyArr[0].length)
+
+        //     // var babyArr = []
+
+        //     // babyArr.push(res[0][i].babylon)
+
+        //     // console.log(babyArr)
+
+   
 
             // var arr = []
 
@@ -104,24 +148,12 @@ function viewProductsByDept() {
 
             // productSales.push(res[i].herbManIsa_HerbManHustling)
 
-           
-        }
+
+
 
         // console.log(overhead)
-
-
-     
-
-
-
-
-
-
-
-
         // exitSupervisor();
-    })
-}
+
 
 // function createDept() {
 //     console.log('create dept')
