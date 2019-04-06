@@ -63,88 +63,62 @@ function viewProductsByDept() {
     connection.query('SELECT d.department_id AS babylon, d.department_name AS rebelmuzik, d.over_head_costs AS working4DeRentMon, p.product_sales AS herbManIsa_HerbManHustling, p.department_name FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name;SELECT SUM(product_sales) FROM products', function (err, res) {
         if (err) throw err;
 
-
-        var bread
-
-    
-
         res[0].forEach(function (element, index, array) {
 
-            var t;
             var propertyNamesArr = [];
+
+            propertyNamesArr.push(Object.keys(array[0])[index])
+
+            var t;
+
             var valuesObjIndex = []
-            
-            var valuesArr = []
+            var valuesArr = Object.values(element)
+            var valuesObj
+           
 
-            valuesArr.push(Object.values(element))
-
-            var valuesObj;
-            // valuesObj = Object.assign(valuesArr[index])
-
-            //make list of unique report headers
-            if (Object.keys(array[0])[index] != undefined) {
-
-
-                propertyNamesArr.push(Object.keys(array[0])[index])
-                // console.log(propertyNamesArr[0])
-
-            //make list of values and create new object of key-value pairs with headers
-                valuesObjIndex.push(index)
-                
-
-                var keyPairArr = valuesObjIndex + '\''
-
-                console.log(_.zipObject(valuesObjIndex, propertyNamesArr));
-
-                
-                // +propertyNamesArr+'\''
-
-                // console.log(keyPairArr)
-
-                // function objectify(arr) {
-                //     return arr.reduce(function(result, currentArray) {
-                //         result[currentArray[0]] = currentArray;
-                //         return result;
-                //     }, {});
-                // }
-
-                // console.log(objectify([keyPairArr]))
-
-//                 console.log(objectify([ [1, 'a'], [2, 'b'], [3, 'c'] ]));
-// # { '1': 'a', '2': 'b', '3': 'c' }
-
+            var headerIndex = Object.keys(array[0])[index]
     
-                
-
-                   //make list of all report values
-
+            var reportHeaders = makeReportHeaders(propertyNamesArr)
+           
+            if (headerIndex){
+                console.log(reportHeaders)
+            }
             
+          
 
+            function makeReportHeaders(arr) {
+                //make list of unique report headers
+                if (headerIndex) {
 
+                    var arr = [];
 
+                    arr.push(Object.keys(array[0])[index])
 
+                    //make list of values and create new object of key-value pairs with headers
+                    valuesObjIndex.push(index)
+
+                    var headerObj = _.zipObject(valuesObjIndex, propertyNamesArr);
+
+                    //make list of all report values
+
+                    return headerObj
+                }
             }
 
-        
-          
+            var myArr = [{ name: "john", age: 23 },
+            { name: "john", age: 43 },
+            { name: "jimi", age: 10 },
+            { name: "bobi", age: 67 }];
 
+            var johns = _.map(myArr, function (o) {
+                if (o.name == "john") return o;
+            });
 
-         
-
-            
-
-
-          
-
-
-
-            // console.log(valuesObj[index])
-
-            // console.log(_.uniq(valuesObj))
+            // Remove undefines from the array
+            johns = _.without(johns, undefined)
 
             // if (valuesObj != undefined){
             //     console.log(_.uniq(valuesObj))
-
 
             // var count = 0;
             // for(var i = 0; i < valuesObj.length; i++){
@@ -155,8 +129,6 @@ function viewProductsByDept() {
             // }
 
             // }
-
-
 
             // console.log(valuesArr)
 
@@ -182,6 +154,12 @@ function viewProductsByDept() {
             // )
 
             // var report = buildReport(element.babylon) + '             | ' + element.rebelmuzik + '        | ' + element.working4DeRentMon + '              | ' + element.herbManIsa_HerbManHustling + '           | ' +  + '           |\n' 
+
+
+
+
+
+
 
 
         });
