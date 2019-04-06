@@ -56,79 +56,83 @@ function viewProductsByDept() {
     console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
 
 
-connection.query('SELECT d.department_id AS babylon, d.department_name AS rebelmuzik, d.over_head_costs AS working4DeRentMon, p.product_sales AS herbManIsa_HerbManHustling, p.department_name FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name;SELECT SUM(product_sales) FROM products', function (err, res) {
-    if (err) throw err;
+    connection.query('SELECT d.department_id AS babylon, d.department_name AS rebelmuzik, d.over_head_costs AS working4DeRentMon, p.product_sales AS herbManIsa_HerbManHustling, p.department_name FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name;SELECT SUM(product_sales) FROM products', function (err, res) {
+        if (err) throw err;
 
 
-var bread
-   
-
-    res[0].forEach(function(element, index, array) {
-
-    var val = 'fadsafds'
-    var t;
-
-    function cell(value){
-        var string = value;
-        var blankSpace = '                ';
-        var addString = string+blankSpace;
-        t = addString.slice(0,15)+'|'
-        
-    console.log(t)
-    }
-
-    cell(val)
+        var bread
 
 
-    // console.log(Object.keys(element))
+        res[0].forEach(function (element, index, array) {
+
+            var val = 'fadsafds'
+            var hell = 'hell'
+            var t;
+            var cellArr = [];
 
 
+            function cell(value) {
+                var string = value;
+                var blankSpace = '                ';
+                var addString = string + blankSpace;
+                t = addString.slice(0, 15) + '|'
+                cellArr.push(t)
+                console.log(cellArr)
 
 
+            }
 
-    function columnHeader(){
+            cell(val)
+            cell(hell)
+            
 
-    }
 
-   
+            
+
+
+            function columnHeader() {
+
+            }
+
+
 
             // console.log(
             //     // '| department_id | department_name | over_head_costs | product_sales | total_profit |\n' +
             //     // '| ------------- | --------------- | --------------- | ------------- | ------------ |\n' +
             //     report
             // )
-    
-
-    // function truncate(str, length, ending) {
-
-    
-
-    //     if (length == null) {
-    //       length
-    //     }
-    //     if (str.length > length) {
-    //       return str.substring(0, length - ending.length) + ending;
-    //     } 
-
-  
-
-    //   };
-
-    //   truncate()
-
-     
-  
-  
-                // var report = buildReport(element.babylon) + '             | ' + element.rebelmuzik + '        | ' + element.working4DeRentMon + '              | ' + element.herbManIsa_HerbManHustling + '           | ' +  + '           |\n' 
 
 
-      });
+            // function truncate(str, length, ending) {
 
-      
 
-      
 
-});
+            //     if (length == null) {
+            //       length
+            //     }
+            //     if (str.length > length) {
+            //       return str.substring(0, length - ending.length) + ending;
+            //     } 
+
+
+
+            //   };
+
+            //   truncate()
+
+
+
+
+            // var report = buildReport(element.babylon) + '             | ' + element.rebelmuzik + '        | ' + element.working4DeRentMon + '              | ' + element.herbManIsa_HerbManHustling + '           | ' +  + '           |\n' 
+
+
+        });
+
+
+
+
+
+    });
 
 }
 
@@ -167,7 +171,7 @@ var bread
 
         //     // console.log(babyArr)
 
-   
+
 
             // var arr = []
 
