@@ -59,7 +59,7 @@ function cell(value) {
 function viewProductsByDept() {
 
     connection.query(
-        'SET SESSION sql_mode="STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION";SELECT d.department_id AS dept_id, d.department_name AS dept_name, d.over_head_costs AS overhead_cost, p.department_name, SUM(p.product_sales) AS product_sales, (IFNULL(Sum(p.product_sales), 0) - IFNULL(Sum(d.over_head_costs), 0)) AS total_profit FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name GROUP BY d.department_name ORDER BY total_profit', 
+        'SET SESSION sql_mode="STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION";SELECT d.department_id AS dept_id, d.department_name AS dept_name, d.over_head_costs AS overhead_cost, p.department_name, IFNULL(SUM(p.product_sales), 0) AS product_sales, IFNULL(SUM(p.product_sales), 0) - IFNULL(d.over_head_costs, 0) AS total_profit FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name GROUP BY d.department_name ORDER BY total_profit', 
         function (err, res) {
             if (err) throw err;
             var propertyIndexArr = []
