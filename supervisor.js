@@ -2,16 +2,6 @@ var mysql = require('mysql');
 var inquirer = require('inquirer');
 var colors = require('colors');
 
-
-
-//lodash 
-var _ = require('lodash');
-
-//lodash method category
-var array = require('lodash/array');
-
-var object = require('lodash/object')
-
 var connection = mysql.createConnection({
     host: 'localhost',
     port: 8889,
@@ -29,8 +19,8 @@ connection.connect(function (err) {
 })
 
 function readDepartments() {
-    console.log('Supervisor View '.bold.red
-        + '99¢ Record Distribution\n'.bgRed.black + '\n')
+    console.log('Supervisor View '.bold.green
+        + '99¢ Record Distribution\n'.bgGreen.black + '\n')
     inquirer
         .prompt(
             [
@@ -66,22 +56,11 @@ function cell(value) {
     return cellArr
 }
 
-function sumTotals(arr, index) {
-    var sum = 0;
-    for (var i = 0; i < arr.length; i++) {
-        sum += parseInt(arr[index]);
-    }
-    console.log(sum);
-}
-
 function viewProductsByDept() {
-
-    console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
 
     connection.query(
         'SET SESSION sql_mode="STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION";SELECT d.department_id AS dept_id, d.department_name AS dept_name, d.over_head_costs AS overhead_cost, p.department_name, SUM(p.product_sales) AS product_sales, (IFNULL(Sum(p.product_sales), 0) - IFNULL(Sum(d.over_head_costs), 0)) AS total_profit FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name GROUP BY d.department_name ORDER BY total_profit', 
         function (err, res) {
-            console.log(res[1])
             if (err) throw err;
             var propertyIndexArr = []
             propertyIndexArr.push(Object.getOwnPropertyNames(res[1][0]));
@@ -91,17 +70,17 @@ function viewProductsByDept() {
 
             function buildHeaders(arr) {
                 var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[4]) + ' ' + cell(arr[5]);
-                console.log('\nTotal Profit by Department...\n'.underline + '\n' +
-                    headers + '\n' +
+                console.log('\n                                                           Total Profit by Department\n'.bgGreen.black +
+                    headers.bgBlack.green.bold + '\n' +
                     '----------------| ---------------| ---------------| ---------------| ---------------|'
-                )
+                .bgBlack)
             }
 
             function buildRows(arr) {
                 arr.forEach(function (element, index, array) {
                     var items = Object.values(element)
                     var rows = ' ' + cell(items[0]) + ' ' + cell(items[1]) + ' ' + cell(items[2]) + ' ' + cell(items[4]) + ' ' + cell(items[5]);
-                    console.log(rows)
+                    console.log(rows.bgBlack.green)
                 })
             }
 
