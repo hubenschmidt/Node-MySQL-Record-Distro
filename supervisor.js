@@ -15,10 +15,10 @@ connection.connect(function (err) {
     if (err) throw (err);
     console.log('connected as id ' + connection.threadId + '\n');
 
-    readDepartments();
+    mainMenu();
 })
 
-function readDepartments() {
+function mainMenu() {
     console.log('Supervisor View '.bold.green
         + '99¢ Record Distribution\n'.bgGreen.black + '\n')
     inquirer
@@ -36,9 +36,9 @@ function readDepartments() {
             switch (answer.menu) {
                 case 'View product sales by Department': viewProductsByDept();
                     break;
-                case 'Create new Department': createDept();
+                case 'Create new Department': createDepartment();
                     break;
-                case 'Exit': exitSupervisor();
+                case 'Exit': exitManager();
 
             }
         })
@@ -51,10 +51,11 @@ function cell(value) {
     var string = value;
     var blankSpace = '                ';
     var addString = string + blankSpace;
-    t = addString.slice(0, 15) + '|'
+    t = addString.slice(0, 15) + '|'.grey
     cellArr.push(t)
     return cellArr
 }
+
 
 function viewProductsByDept() {
 
@@ -68,23 +69,104 @@ function viewProductsByDept() {
             buildHeaders(firstIndex)
             buildRows(res[1])
 
+          
+
             function buildHeaders(arr) {
                 var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[4]) + ' ' + cell(arr[5]);
-                console.log('\n                                                           Total Profit by Department\n'.bgGreen.black +
-                    headers.bgBlack.green.bold + '\n' +
-                    '----------------| ---------------| ---------------| ---------------| ---------------|'
-                .bgBlack)
+                console.log('\n                                                           Total Profit by Department\n'.green.underline +
+                    headers+ '\n' +
+                    '----------------| ---------------| ---------------| ---------------| ---------------|'.grey)
             }
 
             function buildRows(arr) {
                 arr.forEach(function (element, index, array) {
                     var items = Object.values(element)
+
                     var rows = ' ' + cell(items[0]) + ' ' + cell(items[1]) + ' ' + cell(items[2]) + ' ' + cell(items[4]) + ' ' + cell(items[5]);
-                    console.log(rows.bgBlack.green)
+
+
+                    var format = rows.white+ '\n' +
+                    '----------------|'.grey+'----------------|'.grey+'----------------|'.grey+'----------------|'.grey+'----------------|'.grey
+                    console.log(format)
+                    
                 })
             }
-
-            connection.end()
+            exitView()
         }
     )
 }
+
+function createDepartment() {
+
+    console.log('hellow')
+
+    connection.query('SELECT * FROM departments', 
+    function(err, res){
+        if (err) throw err;
+
+        console.log(connection.sql)
+
+        // inquirer
+        // .prompt(
+        //     [
+        //         {
+        //             name: 'department_name',
+        //             type: 'input',
+        //             message: 'Department name?',
+        //             validate: function (value) {
+        //                 if (typeof value === 'string' || value instanceof String) {
+        //                     return true
+        //                 }
+        //                 return false
+        //             }
+        //         },
+        //     ]).then(function(answer){
+
+        //         console.log(answer.department_name)
+
+        //         var query = connection.query('INSERT INTO departments SET ?',
+        //         {
+        //             department_name: answer.department_name
+        //         },
+        //         function (err, res){
+
+        //             if (err) throw err;
+
+        //             console.log('\n\n' + answer.department_name + ' added to the department list...' +
+        //             '\n The following change was made:'.bgGreen.black)
+
+        //                     console.log(query.sql.yellow + '\n\n')
+        //                     console.log('____________________________________\n'.underline.yellow)
+        //                     exitView();
+        //         }
+                 
+        //         )
+        
+        //     })
+    })
+        }
+
+function exitView() {
+    inquirer
+        .prompt(
+            [
+                {
+                    name: 'Navigator',
+                    type: 'list',
+                    choices: ['Menu', 'Exit']
+                }
+            ]
+        ).then(function (answer) {
+            switch (answer.Navigator) {
+                case 'Menu': mainMenu()
+                    break;
+                case 'Exit': exitManager();
+
+            }
+        })
+}
+
+function exitManager() {
+    console.log('exit program')
+    connection.end();
+};
