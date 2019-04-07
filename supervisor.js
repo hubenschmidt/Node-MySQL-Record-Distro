@@ -59,7 +59,7 @@ function cell(value) {
     var string = value;
     var blankSpace = '                ';
     var addString = string + blankSpace;
-    t = addString.slice(0, 16) + '|'
+    t = addString.slice(0, 15) + '|'
     cellArr.push(t)
     return cellArr
 }
@@ -77,7 +77,7 @@ function viewProductsByDept() {
     console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
 
     connection.query(
-        'SELECT ANY_VALUE(d.department_id), d.department_name, SUM(d.over_head_costs), p.department_name, SUM(p.product_sales), (IFNULL(Sum(p.product_sales), 0) - IFNULL(Sum(d.over_head_costs), 0)) AS total_profit FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name GROUP BY d.department_name'
+        'SELECT ANY_VALUE(d.department_id) AS dept_id, d.department_name AS dept_name, SUM(d.over_head_costs) AS overhead_cost, p.department_name, SUM(p.product_sales) as product_sales, (IFNULL(Sum(p.product_sales), 0) - IFNULL(Sum(d.over_head_costs), 0)) AS total_profit FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name GROUP BY d.department_name'
     , function (err, res) {
         if (err) throw err;
 
@@ -87,27 +87,24 @@ function viewProductsByDept() {
 
         var propertyIndexArr = []
 
-        propertyIndexArr.push(Object.getOwnPropertyNames(res[0][0]));
+        propertyIndexArr.push(Object.getOwnPropertyNames(res[0]));
 
         firstIndex = propertyIndexArr[0]
         buildHeaders(firstIndex)
         buildRows(res[0])
 
         function buildHeaders(arr) {
-            var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[3]) + ' ';
-            console.log(
-                        '| department_id | department_name| over_head_costs| product_sales | total_profit |'+'\n'+
-                        '| ------------- | ---------------| ---------------| ------------- | ------------ |'+'\n'+
+            var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[4]) + ' ' + cell(arr[5]);
+            console.log('\nTotal Profit by Department...\n'.underline+'\n'+
                         headers+'\n'+
-                        '| ------------- | ---------------| ---------------| ------------- | ------------ |'+'\n'
+                        '----------------| ---------------| ---------------| ---------------| ---------------|'
                         )
         }
 
         function buildRows(arr) {
             rows.forEach(function (element, index, array) {
-                var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[3]) + ' ';
-                console.log(headers +
-                    '\n')
+                var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[3]) + ' ' + cell(arr[4]);
+                console.log(headers)
             })
         }
     
