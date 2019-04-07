@@ -77,53 +77,47 @@ function viewProductsByDept() {
     console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
 
     connection.query(
-        'SELECT ANY_VALUE(d.department_id) AS dept_id, d.department_name AS dept_name, SUM(d.over_head_costs) AS overhead_cost, p.department_name, SUM(p.product_sales) as product_sales, (IFNULL(Sum(p.product_sales), 0) - IFNULL(Sum(d.over_head_costs), 0)) AS total_profit FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name GROUP BY d.department_name'
-    , function (err, res) {
-        if (err) throw err;
+        'SELECT ANY_VALUE(d.department_id) AS dept_id, d.department_name AS dept_name, SUM(d.over_head_costs) AS overhead_cost, p.department_name, SUM(p.product_sales) as product_sales, (IFNULL(Sum(p.product_sales), 0) - IFNULL(Sum(d.over_head_costs), 0)) AS total_profit FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name GROUP BY d.department_name ORDER BY total_profit'
+        , function (err, res) {
+            if (err) throw err;
 
-        console.log(res[0])
 
-        var rows = _.uniq(_.map(res[0]))
 
-        var propertyIndexArr = []
 
-        propertyIndexArr.push(Object.getOwnPropertyNames(res[0]));
 
-        firstIndex = propertyIndexArr[0]
-        buildHeaders(firstIndex)
-        buildRows(res[0])
+            var propertyIndexArr = []
 
-        function buildHeaders(arr) {
-            var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[4]) + ' ' + cell(arr[5]);
-            console.log('\nTotal Profit by Department...\n'.underline+'\n'+
-                        headers+'\n'+
-                        '----------------| ---------------| ---------------| ---------------| ---------------|'
-                        )
+            propertyIndexArr.push(Object.getOwnPropertyNames(res[0]));
+
+            firstIndex = propertyIndexArr[0]
+
+
+          
+         
+
+            buildHeaders(firstIndex)
+            buildRows(firstIndex)
+
+            function buildHeaders(arr) {
+                var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[4]) + ' ' + cell(arr[5]);
+                console.log('\nTotal Profit by Department...\n'.underline + '\n' +
+                    headers + '\n' +
+                    '----------------| ---------------| ---------------| ---------------| ---------------|'
+                )
+            }
+
+            function buildRows(arr) {
+                res.forEach(function (element, index, array) {
+                    var items = Object.values(element)
+              
+                 
+                    var rows = ' ' + cell(items[0]) + ' ' + cell(items[1]) + ' ' + cell(items[2]) + ' ' + cell(items[4]) + ' ' + cell(items[5]);
+                    console.log(rows)
+                })
+            }
+
+            connection.end()
         }
-
-        function buildRows(arr) {
-            rows.forEach(function (element, index, array) {
-                var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[3]) + ' ' + cell(arr[4]);
-                console.log(headers)
-            })
-        }
-    
-    //sum data by department .. USE SQL instead
-        console.log(summarizeColumn(rows));
-
-        function summarizeColumn(arr){
-            for (i = 0; i < arr.length; i++){
-                console.log(arr[i])
-
-                var values = [];
-                values.push(Object.values(arr[i]))
-
-                return values
-             } 
-            }     
-            
-      connection.end()      
-    }
     )
 }
 
