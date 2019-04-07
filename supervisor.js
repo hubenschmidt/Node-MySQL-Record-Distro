@@ -59,7 +59,7 @@ function cell(value) {
     var string = value;
     var blankSpace = '                ';
     var addString = string + blankSpace;
-    t = addString.slice(0, 15) + '|'
+    t = addString.slice(0, 16) + '|'
     cellArr.push(t)
     return cellArr
 }
@@ -76,8 +76,12 @@ function viewProductsByDept() {
 
     console.log('\nWholesale price and quantity of available titles are listed below...\n'.underline)
 
-    connection.query('SELECT d.department_id AS babylon, d.department_name AS rebelmuzik, d.over_head_costs AS working4DeRentMon, p.product_sales AS herbManIsa_HerbManHustling, p.department_name FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name;SELECT SUM(product_sales) FROM products', function (err, res) {
+    connection.query(
+        'SELECT ANY_VALUE(d.department_id), d.department_name, SUM(d.over_head_costs), p.department_name, SUM(p.product_sales), (IFNULL(Sum(p.product_sales), 0) - IFNULL(Sum(d.over_head_costs), 0)) AS total_profit FROM departments AS d LEFT JOIN products AS p ON d.department_name = p.department_name GROUP BY d.department_name'
+    , function (err, res) {
         if (err) throw err;
+
+        console.log(res[0])
 
         var rows = _.uniq(_.map(res[0]))
 
@@ -87,9 +91,7 @@ function viewProductsByDept() {
 
         firstIndex = propertyIndexArr[0]
         buildHeaders(firstIndex)
-        buildRows(res[0][0])
-        
-
+        buildRows(res[0])
 
         function buildHeaders(arr) {
             var headers = ' ' + cell(arr[0]) + ' ' + cell(arr[1]) + ' ' + cell(arr[2]) + ' ' + cell(arr[3]) + ' ';
@@ -107,13 +109,11 @@ function viewProductsByDept() {
                 console.log(headers +
                     '\n')
             })
-
         }
-
-
+    
+    //sum data by department .. USE SQL instead
         console.log(summarizeColumn(rows));
 
-        
         function summarizeColumn(arr){
             for (i = 0; i < arr.length; i++){
                 console.log(arr[i])
@@ -123,21 +123,12 @@ function viewProductsByDept() {
 
                 return values
              } 
-            }
-       
+            }     
+            
+      connection.end()      
     }
     )
 }
-
-
-
-
-var findOne = function (haystack, arr) {
-    return arr.some(function (v) {
-        return haystack.indexOf(v) >= 0;
-    });
-};
-
 
 
 //  overhead.push(res[0][9]);

@@ -110,8 +110,6 @@ function customerPrompt() {
 
                         var newTotal = chosenProduct.stock_quantity - howMany;
 
-
-
                         updateProduct(
                             newTotal,
                             productSalesRunningTotal, chosenProduct.product_name, chosenProduct.department_name,
