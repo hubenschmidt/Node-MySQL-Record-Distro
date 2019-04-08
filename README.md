@@ -34,13 +34,30 @@ Then,
 Follow the prompts at each of the the three end user screens.
 -
 ## Customer Demo
-The customer interface:
+Customer enters the store interface, follows prompts, and creates an order. The database updates with order information on Products, Departments, and Orders tables.
+![customer-demo](https://github.com/hubenschmidt/Node-MySQL-Record-Distro/blob/master/customerOrderUpdatesMySQLdb.gif)
 
-1) Presents the customer with a table of all available products
-2) Asks for the ID of the customer's desired product
-3) Asks how many items the customer would like to purchase
-4) Confirms order & updates product inventory in database
-customer demo
+## Manager Demo
+Manager can perform various tasks including creating, reading, updating product inventories.
+![manager-demo](https://github.com/hubenschmidt/Node-MySQL-Record-Distro/blob/master/manager.gif)
 
-![customer-demo](https://github.com/hubenschmidt/Node-MySQL-Record-Distro/blob/master/customer.gif)
+Here, they add a product:
+![manager-adds-product](https://github.com/hubenschmidt/Node-MySQL-Record-Distro/blob/master/manager_addProduct.gif)
+
+Supervisor can view a report containing profit data that is saved in no database, and can create new departments:
+## Supervisor Demo
+![supervisor-demo](https://github.com/hubenschmidt/Node-MySQL-Record-Distro/blob/master/supervisor.gif)
+
+-
+## Author
+
+![William Hubenschmidt](https://hubenschmidt.github.io/) for Columbia Engineering Coding Bootcamp, 2019.
+
+
+
+
+
+
+
+
 
