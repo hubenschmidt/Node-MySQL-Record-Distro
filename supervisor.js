@@ -97,9 +97,13 @@ function viewProductsByDept() {
 }
 
 function createDepartment() {
-    connection.query('SELECT * FROM products',
+    connection.query('SELECT DISTINCT department_name FROM departments',
         function (err, res) {
             if (err) throw err;
+
+            var deptList = res.map(function (name) {
+                return name.department_name
+            })
 
             inquirer
                 .prompt(
@@ -109,7 +113,12 @@ function createDepartment() {
                             type: 'input',
                             message: 'Department name?',
                             validate: function (value) {
-                                if (typeof value === 'string' || value instanceof String) {
+                                if (deptList.includes(value)) {
+                                    console.log('\nDepartment already exists\n')
+                                    
+                                    return false
+                                }
+                                else if (typeof value === 'string' || value instanceof String) {
                                     return true
                                 }
                                 return false
