@@ -21,11 +21,7 @@ Then,
 
 1. clone the repo
 2. navigate command line to cloned repo
-3. run command npm install to get packages including 
-  * mysql
-  * inquirer
-  * colors
-  
+3. run command npm install to get required packages
 4.Run node commands:
 * node customer.js (end user)
 * node manager.js (end user)
