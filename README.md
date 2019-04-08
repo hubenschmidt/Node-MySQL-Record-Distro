@@ -2,9 +2,9 @@
 
 A CLI application serving three end user types:
 
-*Customer
-*Business Manager
-*Business Owner
+* Customer
+* Business Manager
+* Business Owner
 
 The app takes in orders from customers and depletes stock from the store's inventory. Product sales are tracked across the store's departments, new products are entered, and an executive report provides summary data on highest-grossing departments, along with the option to add new departments.
 
@@ -22,14 +22,14 @@ Then,
 1. clone the repo
 2. navigate command line to cloned repo
 3. run command npm install to get packages including 
-  *mysql
-  *inquirer
-  *colors
+  * mysql
+  * inquirer
+  * colors
   
 4.Run node commands:
-*node customer.js (end user)
-*node manager.js (end user)
-*node supervisor.js (end user)
+* node customer.js (end user)
+* node manager.js (end user)
+* node supervisor.js (end user)
 
 Follow the prompts at each of the the three end user screens.
 -
