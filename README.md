@@ -33,7 +33,6 @@ Then,
 
 Follow the prompts at each of the the three end user screens.
 -
-
 ## Customer Demo
 The customer interface:
 
@@ -43,5 +42,5 @@ The customer interface:
 4) Confirms order & updates product inventory in database
 customer demo
 
-![customer-demo](https://github.com/hubenschmidt/liri-node-app/blob/fe82709ee2aca35b8f143319c5504acbca2cd912/gifs/liri%20concert-this.gif)
+![customer-demo](https://github.com/hubenschmidt/Node-MySQL-Record-Distro/blob/master/customer.gif)
 
