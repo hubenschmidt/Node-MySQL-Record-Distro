@@ -35,9 +35,8 @@ CREATE TABLE departments (
     department_name VARCHAR(256) NULL,
     over_head_costs DECIMAL(10,2) NULL,
     PRIMARY KEY (department_id)
-)
+);
 
-//EXECUTE THIS QUERY AFTER IMPORT
 CREATE TABLE orders (
     order_id INTEGER NOT NULL AUTO_INCREMENT,
     product_name VARCHAR(256) NOT NULL,
